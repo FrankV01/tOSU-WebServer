@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<!--
+	========================================================================
+	Basic build file for InetServer and Client. 
+	Based on http://ant.apache.org/manual/using.html#example
+	
+	(c) 2010 Frank Villasenor - LGPL
+	
+	Run "ant -projecthelp" to get a list of available targets.
+	
+	See http://ant.apache.org/manual/install.html#installing for 
+	ant installation instructions.
+	========================================================================
+-->
+
+<project name="JokeClientServer" default="test">
+	<description>
+This is a basic build file for the "JokeClientServer" programs.
+
+This does not produce a jar file; it does build and run 
+any unit tests. 
+
+Unit tests must be in:
+${tests} 
+
+Source code must be in:
+${src}
+
+Resulting output goes to:
+${build}
+	</description>
+	
+	
+	<!-- Properties -->
+	<property name="src" location="src" />
+	<property name="tests" location="tests" />
+	<property name="build" location="build" />
+	<!-- <property name="dist" location="dist" /> -->
+	<property name="doc" location="javadocs" />
+	
+	<property name="project-name" value="InetServerClient" />
+	<property name="test.pat" value="**/*test*.java" />
+	<property name="compiler.args" value="-Xlint" />
+	
+	<target name="init">
+		<echo>Project: ${project-name}</echo>
+		<echo>Built files are placed at ${build}</echo>
+		<echo>compiler.args = ${compiler.args}</echo>
+		
+		<!-- Create the build directory -->
+		<mkdir dir="${build}" />
+	</target>
+	
+	<!-- build project, run tests if applicable. -->
+	<target name="build" depends="init" 
+		description="Build project; tests are not ran.">
+		
+		<!-- Compile the source from ${src} into ${build} -->
+		<javac 
+			srcdir="${src}" 
+			destdir="${build}" 
+			debug="on" 
+			deprecation="on"
+			verbose="off">
+			<compilerarg value="${compiler.args}"/>
+		</javac>
+		
+	</target>
+	
+	<!-- build tests -->
+	<target name="test" depends="build"
+		description="builds and run the unit tests found in the tests directory">
+		
+		<!-- Build files - they must be built for the test to work. -->
+		<javac 
+			srcdir="${tests}" 
+			destdir="${build}" 
+			debug="on" 
+			deprecation="on">
+			<compilerarg value="${compiler.args}"/>
+		</javac>
+		
+		
+		<!--
+			======================================================
+			http://ant.apache.org/manual/OptionalTasks/junit.html
+			======================================================
+		-->
+		<junit 
+			haltonerror="off" 
+			haltonfailure="off" 
+			failureproperty="failed.tests"
+			fork="on" 
+			printsummary="off">
+		
+			<!-- class path -->
+			<classpath path="${build}" />
+
+			<!-- 
+				formatter required or output goes to file
+				Options: plain, brief, ?
+			-->
+			<formatter type="brief" usefile="no" /> 
+			
+			<batchtest todir="${build}">
+				<fileset 
+					dir="${tests}"
+					includes="${test.pat}"
+				/>
+			</batchtest>
+		</junit>
+		<fail message="One or more unit tests failed!" if="failed.tests" />
+	</target>
+	
+	<target name="clean" description="Remove built files">
+		<!-- Delete the ${build} and ${dist} directories. -->
+		<delete dir="${build}" />
+		<!-- <delete dir="${dist}" /> -->
+		<delete dir="${doc}" />
+	</target>
+	
+	<target 
+		name="clean-build" 
+		depends="clean,build" 
+		description="Does a clean build" />
+		
+	<target 
+		name="clean-build-test" 
+		depends="clean-build,test" 
+		description="Executes clean-build then runs the tests" />
+	
+	<target 
+		name="all"
+		depends="clean-build-test,doc"
+		description="Executes all tasks, deleting old builds, compiling, testing and generating JavaDocs"
+	/>
+	
+	<!--  Purpose was to build jar files, but for now this isn't needed.
+	<target name="dist" depends="build" description="Creates jar files.">
+		
+	</target>
+	-->
+	
+	<!-- Build JavaDoc documentation... Mostly for my reference -->
+	<target name="doc" depends="" description="Creates JavaDoc Documentation">
+		<!-- Delete old version then recreate folder -->
+		<delete dir="${doc}" />
+		<mkdir dir="${doc}" />
+		
+		<javadoc 
+			destdir="${doc}"
+			author="true"
+           	version="true"
+           	use="true"
+           	windowtitle="Joker Server - CSC-435 Project"
+			access="private">
+			
+		    <fileset dir="${src}" defaultexcludes="yes">
+		      <include name="**.java"/>
+		    	
+		      <exclude name="**.txt"/>
+		      <exclude name="**.log" />
+		      <exclude name="${doc}/**" />
+		    </fileset>
+			
+			<doctitle><![CDATA[<h1>CSC-435 - Joke Server / Client</h1>]]></doctitle>
+			<bottom><![CDATA[<i>Copyright &#169; 2010 Frank Villasenor. All Rights Reserved.</i>]]></bottom>
+			<group title="Group 1 Packages" packages="${src}.*" />
+
+		</javadoc>
+	</target>
+</project>

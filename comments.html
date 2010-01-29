@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<!-- comments.html -->
+	<head>
+		<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+		<title>Comments for Frank Villasenor's CSC-435 WebServer</title>
+	</head>
+	<body lang="en-US" dir="LTR">
+		<h1>Welcome</h1>
+		<p>Welcome to my Joke Server project. I hope you have a great visit.
+		This document contains some quick notes on building and running the
+		programs.</p>
+		
+		<h2>Compiling</h2>
+		<p>A build can be accomplished one of two ways. The first is manually
+		running <code>javac</code> the second is to use <code>ant</code>. The
+		two methods are outlined below.</p>
+		
+		<h3>javac</h3>
+		<p>The are three main files that must be compiled. Any dependencies
+		should be compiled inherently.</p>
+		
+		<p>The files are:</p>
+		
+		<ul>
+			<li><code>JokeClient.java</code> </li>
+			<li><code>JokeClientAdmin.java</code> </li>
+			<li><code>JokeServer.java</code> </li>
+		</ul>
+		
+		<p>To compile the files, simply execute <code>javac</code> for each
+		source file. The following are examples.</p>
+		
+		<ul>
+			<li><code>javac file.java</code></li>
+		</ul>
+			
+		<h3>Ant [<em>Optional</em>]</h3>
+		
+		<p><strong>If you desire</strong>, you can try to use <a href="http://ant.apache.org/">ant</a>
+		to build the files. Using ant saves some typing but it truly isn't
+		required.</p>
+		
+		<p>I've provided a build file called <code>build.xml</code>. Simply
+		point your command window to the directory you unzipped the files at.
+		And then execute <code>ant</code>. A basic build will be done and the
+		resulting class files will be stored in &quot;build&quot;.</p>
+		
+		<p>Further ant build options can be explored via the <code>ant
+		-projecthelp</code> command. This will simply list all build targets
+		but the default is the most commonly used one.</p>
+		
+		<h2>Running</h2>
+		<p>...</p>
+		
+		<h3>Web Server</h3>
+		<p>...</p>
+		
+		<table border="1" cellpadding="0" cellspacing="1">
+			<tr style="background-color:lightgray;font-weight:bold;">
+				<td>Command Switch</td>
+				<td>Command Name</td>
+				<td>Default</td>
+				<td>Description</td>
+			</tr>
+			<tr>
+				<td><code>-?</code></td>
+				<td>Help</td>
+				<td>N/A</td>
+				<td>Lists the programs optional switches and a bit of information
+					on how to use the program.</td>
+			</tr>
+			<tr>
+				<td><code>-ap</code></td>
+				<td>Admin Port</td>
+				<td>8002</td>
+				<td>The port to run the admin server on.</td>
+			</tr>
+			<tr>
+				<td><code>-p</code></td>
+				<td>Client Port</td>
+				<td>8001</td>
+				<td>The port to run the client server on.</td>
+			</tr>
+			<tr>
+				<td><code>-d</code></td>
+				<td>Enable Debug Mode</td>
+				<td>Off</td>
+				<td>Enable debug mode which simply prints out more detailed status
+					messages.</td>
+			</tr>
+		</table>
+	</body>
+</html>
