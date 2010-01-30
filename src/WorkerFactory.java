@@ -20,7 +20,7 @@ final class WorkerFactory {
 	 * @param s The socket to communicate over
 	 * @return The instance.
 	 */
-	public static Thread newServerWorker(Socket s, WorkPerformer performer) {
-		return new StdWorker(s, performer);
+	public static Thread newServerWorker(Socket s) {
+		return new StdWorker(s);
 	}
 }

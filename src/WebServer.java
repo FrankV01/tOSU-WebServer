@@ -25,7 +25,7 @@ public class WebServer {
 			
 			while( true ) {
 				Socket sock = servsock.accept();
-				WorkerFactory.newServerWorker(sock, PerformerFactory.HttpServer()).start();
+				WorkerFactory.newServerWorker(sock).start();
 				
 				
 			}

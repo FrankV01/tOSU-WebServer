@@ -25,9 +25,9 @@ class StdWorker extends Thread {
 	 * @param ServiceMap The server maintained list of ClientIDs and 
 	 * 	each client's list of jokes. Jokes are deleted as they are used.
 	 */
-	public StdWorker( Socket s, WorkPerformer performer ) {
+	public StdWorker( Socket s ) {
 		sock = s;
-		_performer = performer;
+		_performer = PerformerFactory.HttpServer(sock);
 	}
 	
 	/**
