@@ -23,4 +23,8 @@ final class WorkerFactory {
 	public static Thread newServerWorker(Socket s) {
 		return new StdWorker(s);
 	}
+	
+	public static Thread newListener(Socket s) {
+		return new Thread(new MyListener(s));
+	}
 }
