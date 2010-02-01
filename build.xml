@@ -13,9 +13,9 @@
 	========================================================================
 -->
 
-<project name="JokeClientServer" default="test">
+<project name="Web Server" default="test">
 	<description>
-This is a basic build file for the "JokeClientServer" programs.
+This is a basic build file for the "Web Server" programs.
 
 This does not produce a jar file; it does build and run 
 any unit tests. 
