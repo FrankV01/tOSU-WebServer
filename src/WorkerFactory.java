@@ -15,11 +15,11 @@ final class WorkerFactory {
 	 * @param s The socket to communicate over
 	 * @return The instance.
 	 */
-	public static Thread newServerWorker(Socket s) {
-		return new StdWorker(s);
+	public static Thread newServerWorker(Socket s, String PathToServeFrom, DebugPrintable DebugPrinter) {
+		return new StdWorker(s, PathToServeFrom, DebugPrinter);
 	}
 	
-	public static Thread newListener(Socket s) {
-		return new Thread(new MyListener(s));
+	public static Thread newListener(Socket s, DebugPrintable DebugPrinter) {
+		return new Thread(new MyListener(s, DebugPrinter));
 	}
 }

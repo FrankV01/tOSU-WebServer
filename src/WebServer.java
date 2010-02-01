@@ -11,14 +11,13 @@ public class WebServer {
 	};
 	
 	private static ServerMode _mode;
-	private static boolean _debugMode;
 	
 	private static int _port;
 	private static int q_len = 6;
 	private static final String _serverName = "Web Server";
 	private static final String _description = "A basic web server implementation.";
-	
-	
+	private static String _pathToServeFrom;
+	private static DebugPrintable _dPrinter;
 	
 	/**
 	 * Main program entry point. It starts the web server with
@@ -31,14 +30,14 @@ public class WebServer {
 		
 		try {
 			ServerSocket servsock = new ServerSocket( _port, q_len );
-			System.out.println( "Server Starting" );
+			_dPrinter.printMessage( "Server Starting" );
 			
 			while( true ) {
 				Socket sock = servsock.accept();
 				if( _mode == ServerMode.WebServer )
-					WorkerFactory.newServerWorker(sock).start();
+					WorkerFactory.newServerWorker(sock, _pathToServeFrom, _dPrinter).start();
 				else
-					WorkerFactory.newListener(sock).start();
+					WorkerFactory.newListener(sock, _dPrinter).start();
 				
 				
 			}
@@ -65,7 +64,12 @@ public class WebServer {
 			System.exit(0);
 		}
 		
-		_debugMode = Boolean.parseBoolean(_args.getValue("d") );
+		if( Boolean.parseBoolean(_args.getValue("d")) )
+			_dPrinter = new debugPrinter();
+		else
+			_dPrinter = new noDebugPrinter();
+		
+		
 		String tmpPort = _args.getValue("p");
 		_port = Integer.parseInt( tmpPort );
 		
@@ -74,11 +78,10 @@ public class WebServer {
 		else
 			_mode = ServerMode.WebServer;
 		
-		// If in debug mode, lets output the loaded settings. 
-		if( _debugMode ) {
-			System.out.println( ArgumentInfoFormatter.getArgumentInfo(_args) );
-		}
+		_pathToServeFrom = _args.getValue("f");
 		
+		// If in debug mode, lets output the loaded settings. 
+		_dPrinter.printMessage( ArgumentInfoFormatter.getArgumentInfo(_args) );
 	}
 }
 

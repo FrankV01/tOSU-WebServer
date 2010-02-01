@@ -7,10 +7,6 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 
 
 /**
@@ -20,14 +16,16 @@ import java.util.UUID;
 class StdWorker extends Thread { 
 	Socket _sock;	
 	String _serveFromPath;
+	DebugPrintable _dPrinter;
 	
 	/**
 	 * Constructs a new JokeWorker Object.
 	 * @param s The socket connection to work with. Msgs are sent over this.
 	 */
-	public StdWorker( Socket s ) {
+	public StdWorker( Socket s, String PathToServeFrom, DebugPrintable DebugPrinter ) {
 		_sock = s;
-		_serveFromPath = ".";
+		_serveFromPath = PathToServeFrom;
+		_dPrinter = DebugPrinter;
 	}
 	
 	/**
@@ -48,16 +46,18 @@ class StdWorker extends Thread {
 				_clientCom.add( in.readLine() );
 			}
 			
+			// This is an "always" message.
 			System.out.println( String.format("Processing Request for: %s", _clientCom.get(0)) );
+			
 			
 			//Find the file.
 			String _fileName = _clientCom.get(0).split(" ")[1];
-			System.out.println(_fileName);
+			_dPrinter.printMessage(_fileName);
 			
 			HttpPage _pg = null;
 			
 			try {
-				_pg = new HtmlFileSystemPage(new StringBuilder(_serveFromPath).append(_fileName).toString());
+				_pg = new HtmlFileSystemPage(new StringBuilder(_serveFromPath).append(_fileName).toString(), _dPrinter);
 				_is404 = false;
 			} catch( IllegalArgumentException ex ) {
 				//Terrible way to find out if the file exists
@@ -81,6 +81,7 @@ class StdWorker extends Thread {
 			
 		} catch( IOException ex ) {
 			ex.printStackTrace();
+			_dPrinter.printError( "IOException occured in StdWorker.run()" );
 		}
 	
 	}
@@ -131,9 +132,14 @@ class HtmlFileSystemPage implements HttpPage {
 	String _pathToFile;
 	HttpPage _404;
 	HttpPage _genericError;
+	DebugPrintable _dPrinter;
 	
-	HtmlFileSystemPage( String PathToFile ) {
+	HtmlFileSystemPage( String PathToFile, DebugPrintable DebugPrinter ) {
 		_pathToFile = PathToFile;
+		_dPrinter = DebugPrinter;
+		
+		
+		_dPrinter.printMessage( String.format("Looking for file at: %s", _pathToFile) );
 		
 		if( !fileExist() )
 			throw new IllegalArgumentException("PathToFile");
@@ -153,7 +159,7 @@ class HtmlFileSystemPage implements HttpPage {
 			_bReader = new BufferedReader(new FileReader(_pathToFile));
 		}catch( FileNotFoundException ex ) {
 			//Shouldn't be possible....
-			System.err.println( "*** 404 from HtmlFileSystemPage *** ");
+			_dPrinter.printError("*** 404 from HtmlFileSystemPage *** ");
 			ex.printStackTrace();
 			return _404.Generate();
 		}
@@ -168,7 +174,7 @@ class HtmlFileSystemPage implements HttpPage {
 			return _sb.toString();
 			
 		} catch( IOException ex ) {
-			System.err.println( "An error occured while reading the html file to serve." );
+			_dPrinter.printError( "An error occured while reading the html file to serve." );
 			ex.printStackTrace();
 			return _genericError.Generate();
 		}

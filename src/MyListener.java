@@ -14,9 +14,11 @@ import java.net.Socket;
 class MyListener implements Runnable {
 	
 	Socket _sock;
+	DebugPrintable _dPrinter;
 	
-	MyListener( Socket sock ) {
+	MyListener( Socket sock, DebugPrintable DebugPrinter ) {
 		_sock = sock;
+		_dPrinter = DebugPrinter;
 	}
 	
 	@Override
@@ -33,7 +35,7 @@ class MyListener implements Runnable {
 				System.out.println( in.readLine() );
 			}
 			
-			System.out.println("-> No more data");
+			_dPrinter.printMessage("-> No more data");
 			
 			out.print( "HTTP/1.1 200 OK\nContent-Length:500\nContent-Type: text/html" );
 			out.print("\r\n\r\n");
