@@ -40,7 +40,7 @@ public class ArgumentImp<T> implements Argument<T> {
 		StringBuilder _sb = new StringBuilder("-");
 		
 		_sb.append( getKey() );
-		_sb.append( "	" );
+		_sb.append( "\t" );
 		_sb.append( getHelp() );
 		_sb.append( " - Default: " ).append( _default );
 		

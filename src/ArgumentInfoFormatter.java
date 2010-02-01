@@ -7,7 +7,7 @@ class ArgumentInfoFormatter {
 		_sb.append( "  Opt.\tCurr. Setting\tInfo\n");
 		_sb.append( "----------------------------------------------\n" );
 		for( Argument<String> a : toFormat.toMap().values() ) {
-			_sb.append( String.format("	-%s\t%s\t%s\n", a.getKey(), a.getValue(), a.getHelp()) );
+			_sb.append( String.format(" -%s\t%s\t\t%s\n", a.getKey(), a.getValue(), a.getHelp()) );
 		}
 		
 		_sb.append( "\n" );
