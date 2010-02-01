@@ -50,7 +50,8 @@ public class WebServer {
 		_defaults.add( ArgumentFactory.newArgument( "?", "false", "Show Help and exit (Alt. -?).") );
 		_defaults.add( ArgumentFactory.newArgument( "p", "2540", "The port to serve the Client peice on.") );
 		_defaults.add( ArgumentFactory.newArgument( "d", "false", "Enable Debug Mode (Alt. -d)") );
-		_defaults.add( ArgumentFactory.newArgument("l", "false", "Use 'MyListner' which echo's requests to the console."));
+		_defaults.add( ArgumentFactory.newArgument("l", "false", "Use 'MyListner' which echo's requests to the console. (Alt. -l)"));
+		_defaults.add( ArgumentFactory.newArgument( "d", ".", "The directory to serve files from." ));
 		
 		ArgumentProcessor _args = ArgumentFactory.newArgumentProcessor(args, _defaults);
 		
