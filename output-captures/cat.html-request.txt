@@ -1,0 +1,11 @@
+(Request-Line)	GET /tmp-depaul/cat.html HTTP/1.1
+Host	www.understandingguitar.org
+User-Agent	Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7 (.NET CLR 3.5.30729)
+Accept	text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language	en-us,en;q=0.5
+Accept-Encoding	gzip,deflate
+Accept-Charset	ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive	300
+Connection	keep-alive
+Cookie	fbbb_=2790702126.57.1238014714425; __utma=246461376.816412190.1223440091.1260883721.1264986311.23; wp-settings-time-1=1259078366; wp-settings-1=m0%3Do%26m1%3Dc%26m2%3Dc%26m3%3Dc%26m4%3Dc%26m5%3Dc%26m6%3Do%26m7%3Do%26m8%3Dc%26m9%3Do%26editor%3Dtinymce%26m10%3Do; __utmb=246461376.2.10.1264986311; __utmc=246461376; __utmz=246461376.1264986311.23.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+Cache-Control	max-age=0
