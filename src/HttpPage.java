@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 
 
 /**
@@ -32,6 +33,26 @@ public interface HttpPage {
 	 */
 	String contentType();
 	
+}
+
+
+class HttpPageFactory {
+	
+	public static HttpPage new404Error() {
+		return new Html404ErrorPage();
+	}
+	
+	public static HttpPage newGenericError() {
+		return new HtmlGenericErrorPage();
+	}
+	
+	public static HttpPage newDirectoryListingPage( File Path, DebugPrintable DebugPrinter ) {
+		return new HtmlDirectoryListingPage(Path, DebugPrinter);
+	}
+	
+	public static HttpPage newFileSystemPage( File file, DebugPrintable DebugPrinter ) {
+		return new HtmlFileSystemPage2( file, DebugPrinter );
+	}
 }
 
 
@@ -86,36 +107,74 @@ class HtmlGenericErrorPage implements HttpPage {
 
 
 class HtmlDirectoryListingPage implements HttpPage {
+	String _buf; //To sort of cache the results.
+	File _dir;
+	DebugPrintable _dPrinter;
 	
-	HtmlDirectoryListingPage( File DirPath ) {
+	HtmlDirectoryListingPage( File DirPath, DebugPrintable DebugPrinter ) {
 		if( DirPath == null )
 			throw new IllegalArgumentException("DirPath");
 		
 		if( !DirPath.isDirectory() )
 			throw new IllegalArgumentException( "DirPath must be a directory." );
 		
+		_dir = DirPath;
+		_buf = null;
+		_dPrinter = DebugPrinter;
 		
+		_dPrinter.printMessage("Successfully loaded HtmlDirectoryListPage");
 	}
 
 	@Override
 	public String contentType() {
-		// TODO Auto-generated method stub
-		return null;
+		return "text/html";
 	}
 
 	@Override
 	public String render() {
-		// TODO Auto-generated method stub
-		return null;
+		if( _buf == null ) {
+			_dPrinter.printMessage("Building Buffer - HtmlDirectoryListingPage");
+			
+			StringBuilder _sb = new StringBuilder();
+			_sb.append( "<html>" );
+			_sb.append( "<head><title>Directory list for %s</title></head>" );
+			_sb.append( "<body>" );
+			
+			_sb.append("<h1>Directory Listing for ");
+			_sb.append( _dir.getPath() ); 
+			_sb.append("</h1>");
+			
+			_sb.append("<ul>");
+			for( String s : Arrays.asList(_dir.list()) ) 
+				_sb.append( String.format("<li><a href=\"%s\">%s</a></li>", s, s) );
+			_sb.append("</ul>");
+			
+			_sb.append( "</body>" );
+			_sb.append( "</html>" );
+			_buf = _sb.toString();
+		}
+		
+		return _buf;
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return render().getBytes().length;
 	}
 }
 
+class HtmlFileSystemPage2 extends HtmlFileSystemPage {
+	File _file;
+	
+	HtmlFileSystemPage2( File file, DebugPrintable DebugPrinter ) {
+		super( file.getPath(), DebugPrinter );
+		
+		if( !file.isFile() ) 
+			throw new IllegalArgumentException("file must be file");
+		
+		_file = file;
+	}
+}
 
 class HtmlFileSystemPage implements HttpPage {
 	String _pathToFile;

@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -58,19 +59,27 @@ class HttpWorker extends Thread {
 				
 				
 				try {
-					_pg = new HtmlFileSystemPage(new StringBuilder(_serveFromPath).append(_fileName).toString(), _dPrinter);
+					
+					String _path = new StringBuilder(_serveFromPath).append(_fileName).toString();
+					File _file = new File(_path);
+					
+					if( _file.isDirectory() ) {
+						_pg = HttpPageFactory.newDirectoryListingPage(_file, _dPrinter);
+					} else {
+						_pg = HttpPageFactory.newFileSystemPage(_file, _dPrinter);
+					}
 					_header = HttpClientHeadersImpl.newSuccessHeaders(_pg);
 				} catch( IllegalArgumentException ex ) {
 					//Terrible way to find out if the file exists
 					// but this is just an example program.
-					_pg = new Html404ErrorPage();
+					_pg = HttpPageFactory.new404Error();
 					_header = HttpClientHeadersImpl.new404ErrorHeaders(_pg);
 				}
 			} else {
 				//No info received from the client? Server probably screwed up.
 				_dPrinter.printError("No text buffered from client");
 				
-				_pg = new HtmlGenericErrorPage();
+				_pg = HttpPageFactory.newGenericError();
 				_header = HttpClientHeadersImpl.new500ErrorHeaders(_pg);
 			}
 			
