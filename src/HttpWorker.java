@@ -1,7 +1,4 @@
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -13,7 +10,7 @@ import java.util.ArrayList;
  * Suppose to 'work' upon a connection for a std. client.
  * 
  */
-class StdWorker extends Thread { 
+class HttpWorker extends Thread { 
 	Socket _sock;	
 	String _serveFromPath;
 	DebugPrintable _dPrinter;
@@ -22,7 +19,7 @@ class StdWorker extends Thread {
 	 * Constructs a new JokeWorker Object.
 	 * @param s The socket connection to work with. Msgs are sent over this.
 	 */
-	public StdWorker( Socket s, String PathToServeFrom, DebugPrintable DebugPrinter ) {
+	public HttpWorker( Socket s, String PathToServeFrom, DebugPrintable DebugPrinter ) {
 		_sock = s;
 		_serveFromPath = PathToServeFrom;
 		_dPrinter = DebugPrinter;

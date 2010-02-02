@@ -16,7 +16,7 @@ final class WorkerFactory {
 	 * @return The instance.
 	 */
 	public static Thread newServerWorker(Socket s, String PathToServeFrom, DebugPrintable DebugPrinter) {
-		return new StdWorker(s, PathToServeFrom, DebugPrinter);
+		return new HttpWorker(s, PathToServeFrom, DebugPrinter);
 	}
 	
 	public static Thread newListener(Socket s, DebugPrintable DebugPrinter) {
