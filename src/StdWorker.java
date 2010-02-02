@@ -66,16 +66,15 @@ class StdWorker extends Thread {
 				_pg = new HtmlErrorPage();
 			}
 			
+			HttpClientHeaders _header = null;
 			if( !_is404 ) {
-				//Start sending the output -- assuming we find the file.
-				out.print( String.format("HTTP/1.1 200 OK\nContent-Length:%d\nContent-Type: text/html", _pg.pageSize()) );
-				out.print("\r\n\r\n");
+				_header = HttpClientHeadersImpl.newSuccessHeaders(_pg);
 			} else {
-				out.print( String.format("HTTP/1.1 404 Page Not Found\nContent-Length:%d\nContent-Type: text/html", _pg.pageSize()) );
-				out.print("\r\n\r\n");
+				_header = HttpClientHeadersImpl.new404ErrorHeaders(_pg);
 			}
 			
-			out.print(_pg.Generate());
+			out.print( _header.toString() );
+			out.print(_pg.render());
 			
 			_sock.close();
 			
@@ -93,7 +92,7 @@ class StdWorker extends Thread {
 class HtmlErrorPage implements HttpPage {
 
 	@Override
-	public String Generate() {
+	public String render() {
 		StringBuilder _sb = new StringBuilder();
 		_sb.append("<html>");
 		_sb.append("<head><title>Page not Found</title></head>");
@@ -104,15 +103,15 @@ class HtmlErrorPage implements HttpPage {
 	}
 
 	@Override
-	public int pageSize() {
-		return Generate().getBytes().length;
+	public int size() {
+		return render().getBytes().length;
 	}
 }
 
 class HtmlGenericErrorPage implements HttpPage {
 	
 	@Override
-	public String Generate() {
+	public String render() {
 		StringBuilder _sb = new StringBuilder();
 		_sb.append("<html>");
 		_sb.append("<head><title>Server Error Occured</title></head>");
@@ -123,8 +122,8 @@ class HtmlGenericErrorPage implements HttpPage {
 	}
 	
 	@Override
-	public int pageSize() {
-		return Generate().getBytes().length;
+	public int size() {
+		return render().getBytes().length;
 	}
 }
 
@@ -151,7 +150,7 @@ class HtmlFileSystemPage implements HttpPage {
 	//This implementation will just open the file,
 	// gather the contents and send them back in 
 	// a string.
-	public String Generate() {
+	public String render() {
 		StringBuilder _sb = new StringBuilder();
 		BufferedReader _bReader = null;
 		
@@ -161,7 +160,7 @@ class HtmlFileSystemPage implements HttpPage {
 			//Shouldn't be possible....
 			_dPrinter.printError("*** 404 from HtmlFileSystemPage *** ");
 			ex.printStackTrace();
-			return _404.Generate();
+			return _404.render();
 		}
 		
 		try {
@@ -176,14 +175,14 @@ class HtmlFileSystemPage implements HttpPage {
 		} catch( IOException ex ) {
 			_dPrinter.printError( "An error occured while reading the html file to serve." );
 			ex.printStackTrace();
-			return _genericError.Generate();
+			return _genericError.render();
 		}
 		
 	}
 	
 	@Override
-	public int pageSize() {
-		return Generate().getBytes().length;
+	public int size() {
+		return render().getBytes().length;
 	}
 	
 	/**

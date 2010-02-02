@@ -12,11 +12,11 @@ public interface HttpPage {
 	 * No actual file is produced or saved.
 	 * @return The page's HTML. 
 	 */
-	String Generate();
+	String render();
 	
 	/**
 	 * returns the page size for the content-size attribute.
 	 * @return the size as an integer.
 	 */
-	int pageSize();
+	int size();
 }
