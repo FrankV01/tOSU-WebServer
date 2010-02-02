@@ -85,7 +85,36 @@ class HtmlGenericErrorPage implements HttpPage {
 }
 
 
+class HtmlDirectoryListingPage implements HttpPage {
+	
+	HtmlDirectoryListingPage( File DirPath ) {
+		if( DirPath == null )
+			throw new IllegalArgumentException("DirPath");
+		
+		if( !DirPath.isDirectory() )
+			throw new IllegalArgumentException( "DirPath must be a directory." );
+		
+		
+	}
 
+	@Override
+	public String contentType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String render() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int size() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+}
 
 
 class HtmlFileSystemPage implements HttpPage {
