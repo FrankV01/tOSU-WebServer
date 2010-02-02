@@ -137,7 +137,7 @@ class HtmlDirectoryListingPage implements HttpPage {
 			
 			StringBuilder _sb = new StringBuilder();
 			_sb.append( "<html>" );
-			_sb.append( "<head><title>Directory list for %s</title></head>" );
+			_sb.append( String.format("<head><title>Directory list for %s</title></head>", _dir.getPath()) );
 			_sb.append( "<body>" );
 			
 			_sb.append("<h1>Directory Listing for ");
@@ -145,8 +145,12 @@ class HtmlDirectoryListingPage implements HttpPage {
 			_sb.append("</h1>");
 			
 			_sb.append("<ul>");
-			for( String s : Arrays.asList(_dir.list()) ) 
-				_sb.append( String.format("<li><a href=\"%s\">%s</a></li>", s, s) );
+			for( String s : Arrays.asList(_dir.list()) )  {
+				String _buf = new StringBuilder(_dir.getPath()).append("/").append(s).toString();
+				_dPrinter.printMessage(_buf);
+				String t = (new File(_buf).isDirectory()) ? "folder" : "file";
+				_sb.append( String.format("<li><a href=\"%s\">%s</a> - [<em>%s</em>]</li>", s, s, t) );
+			}
 			_sb.append("</ul>");
 			
 			_sb.append( "</body>" );
