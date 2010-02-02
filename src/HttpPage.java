@@ -35,28 +35,57 @@ public interface HttpPage {
 	
 }
 
-
+/**
+ * Factory to generate HttpPage objects.
+ * @author FrankV
+ *
+ */
 class HttpPageFactory {
 	
+	/**
+	 * Provides a new 404 Page
+	 * @return the object.
+	 */
 	public static HttpPage new404Error() {
 		return new Html404ErrorPage();
 	}
 	
+	/**
+	 * Provides a new 'generic' error page.
+	 * @return the object.
+	 */
 	public static HttpPage newGenericError() {
 		return new HtmlGenericErrorPage();
 	}
 	
+	/**
+	 * Provides a new Directory listing object
+	 * @param Path The file object to list
+	 * @param DebugPrinter An debug printable object for debug printing
+	 * @return The object.
+	 */
 	public static HttpPage newDirectoryListingPage( File Path, DebugPrintable DebugPrinter ) {
 		return new HtmlDirectoryListingPage(Path, DebugPrinter);
 	}
 	
+	/**
+	 * Provides a new FileSystem page which is
+	 * a single [text] file to be sent to a client.
+	 * @param file The file object to send.
+	 * @param DebugPrinter A debug printable object for debug printing
+	 * @return the object
+	 */
 	public static HttpPage newFileSystemPage( File file, DebugPrintable DebugPrinter ) {
 		return new HtmlFileSystemPage2( file, DebugPrinter );
 	}
 }
 
 
-
+/**
+ * Represents a plain, standard 404 Error page
+ * @author FrankV
+ *
+ */
 class Html404ErrorPage implements HttpPage {
 
 	@Override
@@ -81,6 +110,11 @@ class Html404ErrorPage implements HttpPage {
 	}
 }
 
+/**
+ * Represents a plain, generic error page
+ * @author FrankV
+ *
+ */
 class HtmlGenericErrorPage implements HttpPage {
 	
 	@Override
@@ -106,6 +140,11 @@ class HtmlGenericErrorPage implements HttpPage {
 }
 
 
+/**
+ * Generates an HTML page for the given directory path.
+ * @author FrankV
+ *
+ */
 class HtmlDirectoryListingPage implements HttpPage {
 	String _buf; //To sort of cache the results.
 	File _dir;
@@ -167,6 +206,11 @@ class HtmlDirectoryListingPage implements HttpPage {
 	}
 }
 
+/**
+ * A revised version of <code>HtmlFileSystemPage</code>.
+ * Which operates with a <code>File</code> object.
+ * @author FrankV
+ */
 class HtmlFileSystemPage2 extends HtmlFileSystemPage {
 	File _file;
 	
@@ -180,12 +224,23 @@ class HtmlFileSystemPage2 extends HtmlFileSystemPage {
 	}
 }
 
+/**
+ * Loads the given file and allows a medium 
+ * to send the file to a Http client.
+ * @author FrankV
+ *
+ */
 class HtmlFileSystemPage implements HttpPage {
 	String _pathToFile;
 	HttpPage _404;
 	HttpPage _genericError;
 	DebugPrintable _dPrinter;
 	
+	/**
+	 * Constructor.
+	 * @param PathToFile - The path of the file to send up render
+	 * @param DebugPrinter - DebugPrintable to provide debug out too
+	 */
 	HtmlFileSystemPage( String PathToFile, DebugPrintable DebugPrinter ) {
 		_pathToFile = PathToFile;
 		_dPrinter = DebugPrinter;
@@ -200,9 +255,13 @@ class HtmlFileSystemPage implements HttpPage {
 		_genericError = new HtmlGenericErrorPage();
 	}
 	
-	//This implementation will just open the file,
-	// gather the contents and send them back in 
-	// a string.
+	/**
+	 * This implementation will just open the file,
+	 * gather the contents and send them back in
+	 * a string.
+	 * 
+	 * {@inheritDoc}
+	 */
 	public String render() {
 		StringBuilder _sb = new StringBuilder();
 		BufferedReader _bReader = null;
