@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -79,9 +80,16 @@ public class WebServer {
 			_mode = ServerMode.WebServer;
 		
 		_pathToServeFrom = _args.getValue("f");
+		validatePathToServeFrom();
 		
 		// If in debug mode, lets output the loaded settings. 
 		_dPrinter.printMessage( ArgumentInfoFormatter.getArgumentInfo(_args) );
+	}
+	
+	private static void validatePathToServeFrom() {
+		File _f = new File(_pathToServeFrom);
+		if( (!_f.isDirectory()) || (!_f.exists()) )
+			throw new IllegalArgumentException( "Given directory is invalid" );
 	}
 }
 
