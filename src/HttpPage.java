@@ -147,8 +147,9 @@ class HtmlGenericErrorPage implements HttpPage {
  */
 class HtmlDirectoryListingPage implements HttpPage {
 	String _buf; //To sort of cache the results.
-	File _dir;
 	DebugPrintable _dPrinter;
+	File _dir;
+	static File _rootDir;
 	
 	HtmlDirectoryListingPage( File DirPath, DebugPrintable DebugPrinter ) {
 		if( DirPath == null )
@@ -156,6 +157,10 @@ class HtmlDirectoryListingPage implements HttpPage {
 		
 		if( !DirPath.isDirectory() )
 			throw new IllegalArgumentException( "DirPath must be a directory." );
+		
+		if( _rootDir == null ) {
+			_rootDir = DirPath;
+		}
 		
 		_dir = DirPath;
 		_buf = null;
@@ -184,9 +189,12 @@ class HtmlDirectoryListingPage implements HttpPage {
 			_sb.append("</h1>");
 			
 			_sb.append("<ul>");
+			
+			if( !_rootDir.equals(_dir) ) //Show the up.
+				_sb.append( "<li><a href=\"..\">[Up one directory]</li>" );
+			
 			for( String s : Arrays.asList(_dir.list()) )  {
 				String _buf = new StringBuilder(_dir.getPath()).append("/").append(s).toString();
-				_dPrinter.printMessage(_buf);
 				String t = (new File(_buf).isDirectory()) ? "folder" : "file";
 				_sb.append( String.format("<li><a href=\"%s\">%s</a> - [<em>%s</em>]</li>", s, s, t) );
 			}
