@@ -49,9 +49,26 @@ class HttpClientHeadersImpl implements HttpClientHeaders {
 		
 		_head.add("HTTP/1.1 404 Page Not Found");
 		_head.add( String.format("Content-Length:%d", page.size()) );
-		_head.add("Content-Type: text/html");
-		_head.add("");
+		_head.add( String.format("Content-Type: %s", page.contentType()) );
 
+		return _head;
+	}
+	
+	/**
+	 * A factory method to return a basic 500 (internal server error) header.
+	 * @param page The page which will inform the end client of the error. 
+	 * @return The header, ready to use.
+	 * @see new404ErrorHeaders
+	 */
+	public static HttpClientHeaders new500ErrorHeaders(HttpPage page) {
+		HttpClientHeadersImpl _head = new HttpClientHeadersImpl();
+		
+		_head.checkHttpPage( page );
+		
+		_head.add("HTTP/1.1 500 Internal Server Error");
+		_head.add( String.format("Content-Length:%d", page.size()) );
+		_head.add( String.format("Content-Type: %s", page.contentType()) );
+		
 		return _head;
 	}
 	
@@ -67,7 +84,7 @@ class HttpClientHeadersImpl implements HttpClientHeaders {
 		
 		_head.add("HTTP/1.1 200 OK");
 		_head.add( String.format("Content-Length:%d", page.size()) );
-		_head.add("Content-Type: text/html");
+		_head.add( String.format("Content-Type: %s", page.contentType()) );
 		
 		return _head;
 	}

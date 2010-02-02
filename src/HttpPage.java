@@ -19,4 +19,11 @@ public interface HttpPage {
 	 * @return the size as an integer.
 	 */
 	int size();
+	
+	/**
+	 * Represents the content type -- text/html, text/xml, etc.
+	 * @return the type as a string.
+	 */
+	String contentType();
+	
 }

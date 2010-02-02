@@ -35,42 +35,46 @@ class StdWorker extends Thread {
 		PrintStream out = null;
 		BufferedReader in = null;
 		ArrayList<String> _clientCom = new ArrayList<String>(); 
-		boolean _is404 = false;
 		
 		try {
 			out = new PrintStream( _sock.getOutputStream() );
 			in = new BufferedReader( new InputStreamReader(_sock.getInputStream()) );
 			
-			//Just echo what the client sends.
-			while( in.ready() ) {
+			
+			//Just echo what the client sends - we should get at least one line...
+			while( in.ready() || (_clientCom.size() == 0) ) {
 				_clientCom.add( in.readLine() );
 			}
 			
-			// This is an "always" message.
-			System.out.println( String.format("Processing Request for: %s", _clientCom.get(0)) );
-			
-			
-			//Find the file.
-			String _fileName = _clientCom.get(0).split(" ")[1];
-			_dPrinter.printMessage(_fileName);
-			
 			HttpPage _pg = null;
-			
-			try {
-				_pg = new HtmlFileSystemPage(new StringBuilder(_serveFromPath).append(_fileName).toString(), _dPrinter);
-				_is404 = false;
-			} catch( IllegalArgumentException ex ) {
-				//Terrible way to find out if the file exists
-				// but this is just an example program.
-				_is404 = true;
-				_pg = new HtmlErrorPage();
-			}
-			
 			HttpClientHeaders _header = null;
-			if( !_is404 ) {
-				_header = HttpClientHeadersImpl.newSuccessHeaders(_pg);
+			
+			if( _clientCom.size() != 0 ) {
+				
+				// This is an "always" message.
+				System.out.println( String.format("Processing Request for: %s", _clientCom.get(0)) );
+				
+				
+				//Find the file.
+				String _fileName = _clientCom.get(0).split(" ")[1];
+				_dPrinter.printMessage(_fileName);
+				
+				
+				try {
+					_pg = new HtmlFileSystemPage(new StringBuilder(_serveFromPath).append(_fileName).toString(), _dPrinter);
+					_header = HttpClientHeadersImpl.newSuccessHeaders(_pg);
+				} catch( IllegalArgumentException ex ) {
+					//Terrible way to find out if the file exists
+					// but this is just an example program.
+					_pg = new Html404ErrorPage();
+					_header = HttpClientHeadersImpl.new404ErrorHeaders(_pg);
+				}
 			} else {
-				_header = HttpClientHeadersImpl.new404ErrorHeaders(_pg);
+				//No info received from the client? Server probably screwed up.
+				_dPrinter.printError("No text buffered from client");
+				
+				_pg = new HtmlGenericErrorPage();
+				_header = HttpClientHeadersImpl.new500ErrorHeaders(_pg);
 			}
 			
 			out.print( _header.toString() );
@@ -89,7 +93,7 @@ class StdWorker extends Thread {
 
 
 
-class HtmlErrorPage implements HttpPage {
+class Html404ErrorPage implements HttpPage {
 
 	@Override
 	public String render() {
@@ -105,6 +109,11 @@ class HtmlErrorPage implements HttpPage {
 	@Override
 	public int size() {
 		return render().getBytes().length;
+	}
+
+	@Override
+	public String contentType() {
+		return "text/html";
 	}
 }
 
@@ -125,6 +134,11 @@ class HtmlGenericErrorPage implements HttpPage {
 	public int size() {
 		return render().getBytes().length;
 	}
+
+	@Override
+	public String contentType() {
+		return "text/html";
+	}
 }
 
 class HtmlFileSystemPage implements HttpPage {
@@ -143,7 +157,7 @@ class HtmlFileSystemPage implements HttpPage {
 		if( !fileExist() )
 			throw new IllegalArgumentException("PathToFile");
 	
-		_404 = new HtmlErrorPage();
+		_404 = new Html404ErrorPage();
 		_genericError = new HtmlGenericErrorPage();
 	}
 	
@@ -191,6 +205,11 @@ class HtmlFileSystemPage implements HttpPage {
 	 */
 	private boolean fileExist() {
 		return new File(_pathToFile).exists();
+	}
+
+	@Override
+	public String contentType() {
+		return "text/html";
 	}
 
 
