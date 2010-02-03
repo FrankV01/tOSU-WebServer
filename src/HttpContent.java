@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @author Frank
  *
  */
-public interface HttpPage {
+public interface HttpContent {
 	
 	/**
 	 * Returns the generated page.
@@ -31,7 +31,7 @@ public interface HttpPage {
 	 * Represents the content type -- text/html, text/xml, etc.
 	 * @return the type as a string.
 	 */
-	String contentType();
+	String type();
 	
 }
 
@@ -46,7 +46,7 @@ class HttpPageFactory {
 	 * Provides a new 404 Page
 	 * @return the object.
 	 */
-	public static HttpPage new404Error() {
+	public static HttpContent new404Error() {
 		return new Html404ErrorPage();
 	}
 	
@@ -54,7 +54,7 @@ class HttpPageFactory {
 	 * Provides a new 'generic' error page.
 	 * @return the object.
 	 */
-	public static HttpPage newGenericError() {
+	public static HttpContent newGenericError() {
 		return new HtmlGenericErrorPage();
 	}
 	
@@ -64,7 +64,7 @@ class HttpPageFactory {
 	 * @param DebugPrinter An debug printable object for debug printing
 	 * @return The object.
 	 */
-	public static HttpPage newDirectoryListingPage( File Path, DebugPrintable DebugPrinter ) {
+	public static HttpContent newDirectoryListingPage( File Path, DebugPrintable DebugPrinter ) {
 		return new HtmlDirectoryListingPage(Path, DebugPrinter);
 	}
 	
@@ -75,7 +75,7 @@ class HttpPageFactory {
 	 * @param DebugPrinter A debug printable object for debug printing
 	 * @return the object
 	 */
-	public static HttpPage newFileSystemPage( File file, DebugPrintable DebugPrinter ) {
+	public static HttpContent newFileSystemPage( File file, DebugPrintable DebugPrinter ) {
 		return new HtmlFileSystemPage2( file, DebugPrinter );
 	}
 }
@@ -86,7 +86,7 @@ class HttpPageFactory {
  * @author FrankV
  *
  */
-class Html404ErrorPage implements HttpPage {
+class Html404ErrorPage implements HttpContent {
 
 	@Override
 	public String render() {
@@ -105,7 +105,7 @@ class Html404ErrorPage implements HttpPage {
 	}
 
 	@Override
-	public String contentType() {
+	public String type() {
 		return "text/html";
 	}
 }
@@ -115,7 +115,7 @@ class Html404ErrorPage implements HttpPage {
  * @author FrankV
  *
  */
-class HtmlGenericErrorPage implements HttpPage {
+class HtmlGenericErrorPage implements HttpContent {
 	
 	@Override
 	public String render() {
@@ -134,7 +134,7 @@ class HtmlGenericErrorPage implements HttpPage {
 	}
 
 	@Override
-	public String contentType() {
+	public String type() {
 		return "text/html";
 	}
 }
@@ -145,7 +145,7 @@ class HtmlGenericErrorPage implements HttpPage {
  * @author FrankV
  *
  */
-class HtmlDirectoryListingPage implements HttpPage {
+class HtmlDirectoryListingPage implements HttpContent {
 	String _buf; //To sort of cache the results.
 	DebugPrintable _dPrinter;
 	File _dir;
@@ -170,7 +170,7 @@ class HtmlDirectoryListingPage implements HttpPage {
 	}
 
 	@Override
-	public String contentType() {
+	public String type() {
 		return "text/html";
 	}
 
@@ -238,10 +238,10 @@ class HtmlFileSystemPage2 extends HtmlFileSystemPage {
  * @author FrankV
  *
  */
-class HtmlFileSystemPage implements HttpPage {
+class HtmlFileSystemPage implements HttpContent {
 	String _pathToFile;
-	HttpPage _404;
-	HttpPage _genericError;
+	HttpContent _404;
+	HttpContent _genericError;
 	DebugPrintable _dPrinter;
 	
 	/**
@@ -313,7 +313,7 @@ class HtmlFileSystemPage implements HttpPage {
 	}
 
 	@Override
-	public String contentType() {
+	public String type() {
 		return "text/html";
 	}
 }

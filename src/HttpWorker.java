@@ -44,7 +44,7 @@ class HttpWorker extends Thread {
 				_clientCom.add( in.readLine() );
 			}
 			
-			HttpPage _pg = null;
+			HttpContent _pg = null;
 			HttpClientHeaders _header = null;
 			
 			if( _clientCom.size() != 0 ) {

@@ -43,13 +43,13 @@ class HttpClientHeadersImpl implements HttpClientHeaders {
 	 * @return the constructed, ready to <code>toString()</code> HttpClientHeaders object.
 	 * @see newSuccessHeaders
 	 */
-	public static HttpClientHeaders new404ErrorHeaders(HttpPage page) {
+	public static HttpClientHeaders new404ErrorHeaders(HttpContent page) {
 		HttpClientHeadersImpl _head = new HttpClientHeadersImpl();
 		_head.checkHttpPage( page );
 		
 		_head.add("HTTP/1.1 404 Page Not Found");
 		_head.add( String.format("Content-Length:%d", page.size()) );
-		_head.add( String.format("Content-Type: %s", page.contentType()) );
+		_head.add( String.format("Content-Type: %s", page.type()) );
 
 		return _head;
 	}
@@ -60,14 +60,14 @@ class HttpClientHeadersImpl implements HttpClientHeaders {
 	 * @return The header, ready to use.
 	 * @see new404ErrorHeaders
 	 */
-	public static HttpClientHeaders new500ErrorHeaders(HttpPage page) {
+	public static HttpClientHeaders new500ErrorHeaders(HttpContent page) {
 		HttpClientHeadersImpl _head = new HttpClientHeadersImpl();
 		
 		_head.checkHttpPage( page );
 		
 		_head.add("HTTP/1.1 500 Internal Server Error");
 		_head.add( String.format("Content-Length:%d", page.size()) );
-		_head.add( String.format("Content-Type: %s", page.contentType()) );
+		_head.add( String.format("Content-Type: %s", page.type()) );
 		
 		return _head;
 	}
@@ -78,18 +78,18 @@ class HttpClientHeadersImpl implements HttpClientHeaders {
 	 * @return The constructed, ready to <code>toString()</code> HttpClientHeaders object.
 	 * @see new404ErrorHeaders
 	 */
-	public static HttpClientHeaders newSuccessHeaders(HttpPage page) {
+	public static HttpClientHeaders newSuccessHeaders(HttpContent page) {
 		HttpClientHeadersImpl _head = new HttpClientHeadersImpl();
 		_head.checkHttpPage( page );
 		
 		_head.add("HTTP/1.1 200 OK");
 		_head.add( String.format("Content-Length:%d", page.size()) );
-		_head.add( String.format("Content-Type: %s", page.contentType()) );
+		_head.add( String.format("Content-Type: %s", page.type()) );
 		
 		return _head;
 	}
 	
-	private void checkHttpPage( HttpPage page ) {
+	private void checkHttpPage( HttpContent page ) {
 		if( page == null ) {
 			throw new IllegalArgumentException();
 		}
