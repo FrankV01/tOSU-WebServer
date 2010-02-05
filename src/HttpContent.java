@@ -1,8 +1,11 @@
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
 
@@ -15,11 +18,18 @@ import java.util.Arrays;
 public interface HttpContent {
 	
 	/**
-	 * Returns the generated page.
+	 * Returns the generated page as a string.
 	 * No actual file is produced or saved.
 	 * @return The page's HTML. 
 	 */
-	String render();
+	String render() throws UnsupportedOperationException; //allow this to throw an exception...
+	
+	/**
+	 * Provides an InputStream of the content.
+	 * @return An input stream used to output this method.
+	 * @see http://www.brics.dk/~amoeller/WWW/javaweb/server.html
+	 */
+	InputStream generate();
 	
 	/**
 	 * returns the page size for the content-size attribute.
@@ -41,6 +51,25 @@ public interface HttpContent {
  *
  */
 class HttpPageFactory {
+	
+	public static HttpContent byFileExtention( File theFile, DebugPrintable debugPrinter ) {
+		
+		if( theFile.isDirectory() )
+			return newDirectoryListingPage(theFile, debugPrinter);
+		
+		if( theFile.isFile() ) {
+			String[] _t  = theFile.getName().split(".");
+			String _ext = _t[_t.length-1];
+			
+			if( _ext == "html" || _ext == "htm" )
+				return newFileSystemPage(theFile, debugPrinter);
+			if( _ext == "css" )
+				return null; //TODO
+			else
+				return newImageFile( theFile, debugPrinter );
+		} else
+			return null;
+	}
 	
 	/**
 	 * Provides a new 404 Page
@@ -78,15 +107,51 @@ class HttpPageFactory {
 	public static HttpContent newFileSystemPage( File file, DebugPrintable DebugPrinter ) {
 		return new HtmlFileSystemPage2( file, DebugPrinter );
 	}
+	
+	public static HttpContent newImageFile( File file, DebugPrintable debugPrinter ) {
+		return new HttpImageFile( file, debugPrinter );
+	}
 }
 
+
+abstract class StringHtmlOnlyPage implements HttpContent {
+	
+	/**
+	 * If 'render' isn't implemented in the child class 
+	 * this returns null. 
+	 */
+	@Override
+	public InputStream generate() {
+		try {
+			InputStream file = new ByteArrayInputStream( this.render().getBytes() );
+			return file;
+		} catch( UnsupportedOperationException ex ) {
+			return null;
+		}
+	}
+	
+
+	@Override
+	public int size() {
+		try {
+			return render().getBytes().length;
+		} catch( UnsupportedOperationException ex ) {
+			return 0;
+		}
+	}
+
+	@Override
+	public String type() {
+		return "text/html";
+	}
+}
 
 /**
  * Represents a plain, standard 404 Error page
  * @author FrankV
  *
  */
-class Html404ErrorPage implements HttpContent {
+class Html404ErrorPage extends StringHtmlOnlyPage implements HttpContent {
 
 	@Override
 	public String render() {
@@ -99,15 +164,6 @@ class Html404ErrorPage implements HttpContent {
 		return _sb.toString();
 	}
 
-	@Override
-	public int size() {
-		return render().getBytes().length;
-	}
-
-	@Override
-	public String type() {
-		return "text/html";
-	}
 }
 
 /**
@@ -115,7 +171,7 @@ class Html404ErrorPage implements HttpContent {
  * @author FrankV
  *
  */
-class HtmlGenericErrorPage implements HttpContent {
+class HtmlGenericErrorPage extends StringHtmlOnlyPage implements HttpContent {
 	
 	@Override
 	public String render() {
@@ -127,16 +183,6 @@ class HtmlGenericErrorPage implements HttpContent {
 		
 		return _sb.toString();
 	}
-	
-	@Override
-	public int size() {
-		return render().getBytes().length;
-	}
-
-	@Override
-	public String type() {
-		return "text/html";
-	}
 }
 
 
@@ -145,7 +191,7 @@ class HtmlGenericErrorPage implements HttpContent {
  * @author FrankV
  *
  */
-class HtmlDirectoryListingPage implements HttpContent {
+class HtmlDirectoryListingPage extends StringHtmlOnlyPage implements HttpContent {
 	String _buf; //To sort of cache the results.
 	DebugPrintable _dPrinter;
 	File _dir;
@@ -167,11 +213,6 @@ class HtmlDirectoryListingPage implements HttpContent {
 		_dPrinter = DebugPrinter;
 		
 		_dPrinter.printMessage("Successfully loaded HtmlDirectoryListPage");
-	}
-
-	@Override
-	public String type() {
-		return "text/html";
 	}
 
 	@Override
@@ -207,11 +248,39 @@ class HtmlDirectoryListingPage implements HttpContent {
 		
 		return _buf;
 	}
+}
+
+class CssOnFileSystem implements HttpContent {
+	File _file;
+	DebugPrintable _dPrinter;
+	
+	CssOnFileSystem( File theFile, DebugPrintable debugPrinter ) {
+		_file = theFile;
+		_dPrinter = debugPrinter;
+	}
+	
+	@Override
+	public InputStream generate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String render() throws UnsupportedOperationException {
+		
+	}
 
 	@Override
 	public int size() {
-		return render().getBytes().length;
+		// TODO Auto-generated method stub
+		return 0;
 	}
+
+	@Override
+	public String type() {
+		return "text/css";
+	}
+	
 }
 
 /**
@@ -259,8 +328,8 @@ class HtmlFileSystemPage implements HttpContent {
 		if( !fileExist() )
 			throw new IllegalArgumentException("PathToFile");
 	
-		_404 = new Html404ErrorPage();
-		_genericError = new HtmlGenericErrorPage();
+		_404 = HttpPageFactory.new404Error(); 
+		_genericError = HttpPageFactory.newGenericError();
 	}
 	
 	/**
@@ -299,10 +368,6 @@ class HtmlFileSystemPage implements HttpContent {
 		}	
 	}
 	
-	@Override
-	public int size() {
-		return render().getBytes().length;
-	}
 	
 	/**
 	 * Check if the file given in the constructor exists
@@ -313,7 +378,67 @@ class HtmlFileSystemPage implements HttpContent {
 	}
 
 	@Override
+	public InputStream generate() {
+		try { //TODO: Figure how to implement this given the dumb complexity. Perhaps refactor this class out.
+			_input = new FileInputStream(_file);
+		} catch( IOException ioex ) {
+			_dPrinter.printError(ioex.toString());
+		}
+		return _input;
+	}
+
+	@Override
+	public int size() {
+		return render().getBytes().length; 
+	}
+
+	@Override
 	public String type() {
 		return "text/html";
+	}
+}
+
+class HttpImageFile implements HttpContent {
+	File _file;
+	DebugPrintable _dPrinter;
+	
+	InputStream _input;
+	
+	HttpImageFile( File pFile, DebugPrintable debugPrinter ) {
+		_file = pFile;
+		_dPrinter = debugPrinter;
+		
+		if( (!_file.exists()) || (!_file.isFile()) )
+			throw new IllegalArgumentException("_file");
+	}
+	
+	@Override
+	public String render() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public int size() {
+		return (int) _file.length();
+	}
+
+	@Override
+	public String type() {
+		if( _file.getName().endsWith(".gif") )
+			return "image/gif"; 
+		else if( _file.getName().endsWith(".jpg") || _file.getName().endsWith(".jpeg") )
+			return "image/jpeg";
+		else //add if?
+			return "image/png";
+	}
+
+	@Override
+	public InputStream generate() {
+		try {
+			_input = new FileInputStream(_file);
+		} catch( IOException ioex ) {
+			_dPrinter.printError(ioex.toString());
+		}
+		return _input;
 	}
 }

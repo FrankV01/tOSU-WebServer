@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -84,7 +86,8 @@ class HttpWorker extends Thread {
 			}
 			
 			out.print( _header.toString() );
-			out.print(_pg.render());
+			//out.print(_pg.render());
+			sendFile( _pg.generate(), out );
 			
 			_sock.close();
 			
@@ -94,6 +97,26 @@ class HttpWorker extends Thread {
 		}
 	
 	}
+	
+	/**
+	 * Send the 'InputSteam' to the 'OutputStream'. Code 
+	 * adapted from "A Web Server in 150 Lines"
+	 * @param file The input file
+	 * @param out the stream to output too.
+	 * @see http://www.brics.dk/~amoeller/WWW/javaweb/server.html
+	 */
+    private void sendFile(InputStream file, OutputStream out)
+    {
+        try {
+            byte[] buffer = new byte[1000];
+            while (file.available()>0) {
+                out.write(buffer, 0, file.read(buffer));
+            }
+        } catch (IOException e) { 
+        	_dPrinter.printError(e.toString()); 
+        }
+    }
+
 }
 
 
