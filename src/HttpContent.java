@@ -64,7 +64,7 @@ class HttpPageFactory {
 			if( _ext == "html" || _ext == "htm" )
 				return newFileSystemPage(theFile, debugPrinter);
 			if( _ext == "css" )
-				return null; //TODO
+				return new CssOnFileSystem(theFile, debugPrinter);
 			else
 				return newImageFile( theFile, debugPrinter );
 		} else
@@ -111,6 +111,8 @@ class HttpPageFactory {
 	public static HttpContent newImageFile( File file, DebugPrintable debugPrinter ) {
 		return new HttpImageFile( file, debugPrinter );
 	}
+	
+	
 }
 
 
@@ -261,19 +263,23 @@ class CssOnFileSystem implements HttpContent {
 	
 	@Override
 	public InputStream generate() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return new FileInputStream(_file);
+		} catch (FileNotFoundException e) {
+			_dPrinter.printError(e.toString());
+			return null;
+		}
 	}
 
 	@Override
 	public String render() throws UnsupportedOperationException {
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		int _size = Integer.parseInt( new Long(_file.length()).toString() );
+		return _size;
 	}
 
 	@Override
@@ -299,6 +305,17 @@ class HtmlFileSystemPage2 extends HtmlFileSystemPage {
 		
 		_file = file;
 	}
+	
+	@Override
+	public InputStream generate() {
+		InputStream _input=null;
+		try { //TODO: Figure how to implement this given the dumb complexity. Perhaps refactor this class out.
+			_input = new FileInputStream(_file);
+		} catch( IOException ioex ) {
+			_dPrinter.printError(ioex.toString());
+		}
+		return _input;
+	}
 }
 
 /**
@@ -307,7 +324,7 @@ class HtmlFileSystemPage2 extends HtmlFileSystemPage {
  * @author FrankV
  *
  */
-class HtmlFileSystemPage implements HttpContent {
+abstract class HtmlFileSystemPage implements HttpContent {
 	String _pathToFile;
 	HttpContent _404;
 	HttpContent _genericError;
@@ -377,15 +394,6 @@ class HtmlFileSystemPage implements HttpContent {
 		return new File(_pathToFile).exists();
 	}
 
-	@Override
-	public InputStream generate() {
-		try { //TODO: Figure how to implement this given the dumb complexity. Perhaps refactor this class out.
-			_input = new FileInputStream(_file);
-		} catch( IOException ioex ) {
-			_dPrinter.printError(ioex.toString());
-		}
-		return _input;
-	}
 
 	@Override
 	public int size() {
