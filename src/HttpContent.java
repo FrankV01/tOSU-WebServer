@@ -530,3 +530,32 @@ class HttpImageFile implements HttpContent {
 		return _input;
 	}
 }
+
+
+class SimpleCGIPage implements HttpContent {
+
+	@Override
+	public InputStream generate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String render() throws UnsupportedOperationException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int size() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String type() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}
