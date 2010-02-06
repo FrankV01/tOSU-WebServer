@@ -1,6 +1,5 @@
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -65,15 +64,16 @@ class HttpWorker extends Thread {
 				
 				try {
 					String _path = new StringBuilder(_serveFromPath).append(_fileName).toString();
-					File _file = new File(_path);
+					HttpFile _file = new HttpFile(_path);
 					
 					_pg = HttpContentFactory.byFileExtention(_file, _dPrinter);
 					_header = HttpClientHeadersImpl.newSuccessHeaders(_pg);
 				} catch( IllegalArgumentException ex ) {
-					//Terrible way to find out if the file exists
-					// but this is just an example program.
+					// Not likely to occur but can. This handles the error
+					//  and prints an error on the server's console.
 					_pg = HttpContentFactory.new404Error();
 					_header = HttpClientHeadersImpl.new404ErrorHeaders(_pg);
+					_dPrinter.printError(ex.toString()); 
 				}
 			} else {
 				//No info received from the client? Server probably screwed up.

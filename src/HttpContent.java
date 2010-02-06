@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -51,8 +53,23 @@ public interface HttpContent {
  *
  */
 class HttpContentFactory {
+
 	
-	public static HttpContent byFileExtention( File theFile, DebugPrintable debugPrinter ) {
+	/**
+	 * Based on the file extension (or other factors) this figures out
+	 * which implementation of HttpContent should be provided to the caller.
+	 * @param theFile : The file that is to be represented by the HttpContent object.
+	 * @param debugPrinter : A debug printer object which is required.
+	 * @return : The newly constructed object.
+	 */
+	public static HttpContent byFileExtention( HttpFile theFile, DebugPrintable debugPrinter ) {
+		
+		if( extensionIs(theFile, ".fake-cgi") ) 
+			if( theFile.getName().toLowerCase().endsWith("addnums.fake-cgi") )
+				return new SimpleCGIAddNums( theFile.getArguments(), debugPrinter );
+			else
+				return new404Error();
+		
 		
 		if( !theFile.exists() )
 			return new404Error();
@@ -177,7 +194,6 @@ class Html404ErrorPage extends StringHtmlOnlyPage implements HttpContent {
 		
 		return _sb.toString();
 	}
-
 }
 
 /**
@@ -303,7 +319,6 @@ class CssOnFileSystem implements HttpContent {
 	public String type() {
 		return "text/css";
 	}
-	
 }
 
 
@@ -531,31 +546,107 @@ class HttpImageFile implements HttpContent {
 	}
 }
 
-
-class SimpleCGIPage implements HttpContent {
-
-	@Override
-	public InputStream generate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String render() throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String type() {
-		// TODO Auto-generated method stub
-		return null;
+/**
+ * Imitates a single CGi program. This takes a list of numbers (no matter how big)
+ * and adds the numbers up. It outputs the result as an HTML form.
+ * @author Frank
+ *
+ */
+class SimpleCGIAddNums extends StringHtmlOnlyPage implements HttpContent {
+	DebugPrintable _dPrinter;
+	Map<String, String> _args;
+	Map<String, Integer> _intArgs;
+	
+	/**
+	 * Constructs the immutable object.
+	 * @param arguments the arguments to use in generation. (Can't be null)
+	 * @param debugPrinter a Debug printer object. (Can't be null)
+	 */
+	SimpleCGIAddNums( Map<String, String> arguments, DebugPrintable debugPrinter ) {
+		if( arguments == null || debugPrinter == null ) {
+			throw new IllegalArgumentException( "params can't be null.");
+		}
+		
+		_dPrinter = debugPrinter;
+		
+		if( arguments.isEmpty() || arguments.size() < 3 )
+			throw new IllegalArgumentException();
+		
+		
+		_args = new HashMap<String, String>();
+		_intArgs = new HashMap<String, Integer>();
+		for( String itm : arguments.keySet() ) {
+			try { 
+				_intArgs.put( itm, new Integer(arguments.get(itm)) );
+			}
+			catch( NumberFormatException ex ) {
+				_args.put( itm, arguments.get(itm) );
+			}
+		}
 	}
 	
+	/**
+	 * This implementation generates the form and while in the process
+	 * it does the required calculations.
+	 */
+	@Override
+	public String render() throws UnsupportedOperationException {
+		StringBuilder _sb = new StringBuilder();
+		
+		_sb.append( "<html>" );
+		_sb.append( "<head><title>Simple CGI - Add Nums</title></head>");
+		_sb.append( "<body>" );
+		
+		_sb.append("<h1>Add Numbers</h1>");
+		
+		_sb = appendGreeting(_sb);
+		_sb = appendMath(_sb);
+
+		_sb.append( "</body>" );
+		_sb.append( "</html>" );
+		
+		return _sb.toString();
+	}
+	
+	private StringBuilder appendMath( StringBuilder inUse ) {
+		inUse.append("<p>");
+		
+		//
+		// Do the work.
+		boolean _first = true;
+		long _ans = 0;
+		for( Integer itm : _intArgs.values() ) {
+			
+			if( !_first )
+				inUse.append(" + ");
+			else
+				_first = !_first; //change.
+			
+			inUse.append(itm);
+			
+			_ans += itm.longValue();
+		}
+		inUse.append( " = " );
+		inUse.append(_ans );
+		
+		inUse.append("</p>");
+		
+		return inUse;
+	}
+	
+	private StringBuilder appendGreeting( StringBuilder inUse ) {
+		inUse.append("<p>");
+		boolean _first = true;
+		inUse.append("Hello: ");
+		for( String itm : _args.values() ) {
+			if( !_first )
+				inUse.append(", ");
+			else
+				_first = !_first; //change.
+			
+			inUse.append( itm );
+		}
+		inUse.append("</p>");
+		return inUse;
+	}
 }
