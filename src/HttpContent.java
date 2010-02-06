@@ -50,25 +50,37 @@ public interface HttpContent {
  * @author FrankV
  *
  */
-class HttpPageFactory {
+class HttpContentFactory {
 	
 	public static HttpContent byFileExtention( File theFile, DebugPrintable debugPrinter ) {
+		
+		if( !theFile.exists() )
+			return new404Error();
 		
 		if( theFile.isDirectory() )
 			return newDirectoryListingPage(theFile, debugPrinter);
 		
 		if( theFile.isFile() ) {
-			String[] _t  = theFile.getName().split(".");
-			String _ext = _t[_t.length-1];
-			
-			if( _ext == "html" || _ext == "htm" )
+			if( extensionIs(theFile, ".html") || extensionIs(theFile, ".htm")  )
 				return newFileSystemPage(theFile, debugPrinter);
-			if( _ext == "css" )
+			
+			if( extensionIs(theFile, ".css") )
 				return new CssOnFileSystem(theFile, debugPrinter);
-			else
+			
+			if( extensionIs(theFile, ".txt") )
+				return new plainTextOnFileSystem(theFile, debugPrinter);
+			
+			if( extensionIs(theFile, ".gif") || extensionIs(theFile, ".jpg") || extensionIs(theFile, ".jpeg") )
 				return newImageFile( theFile, debugPrinter );
+			
+			// Can't do anything else... return generic error.
+			return newGenericError();
 		} else
-			return null;
+			return newGenericError();
+	}
+	
+	private static boolean extensionIs( File file, String ext ) {
+		return file.getName().toLowerCase().endsWith(ext.toLowerCase());
 	}
 	
 	/**
@@ -136,7 +148,7 @@ abstract class StringHtmlOnlyPage implements HttpContent {
 	@Override
 	public int size() {
 		try {
-			return render().getBytes().length;
+			return render().getBytes().length * 2;
 		} catch( UnsupportedOperationException ex ) {
 			return 0;
 		}
@@ -252,6 +264,11 @@ class HtmlDirectoryListingPage extends StringHtmlOnlyPage implements HttpContent
 	}
 }
 
+/**
+ * Support to generate CSS content.
+ * @author FrankV
+ *
+ */
 class CssOnFileSystem implements HttpContent {
 	File _file;
 	DebugPrintable _dPrinter;
@@ -289,6 +306,55 @@ class CssOnFileSystem implements HttpContent {
 	
 }
 
+
+/**
+ * Support to send plain text content
+ * @author FrankV
+ *
+ */
+class plainTextOnFileSystem implements HttpContent {
+	DebugPrintable _dPrinter;
+	File _file;
+	
+	plainTextOnFileSystem( File theFile, DebugPrintable debugPrinter ) {
+		
+		if( !theFile.isFile() || !theFile.exists() )
+			throw new IllegalArgumentException();
+		
+		_dPrinter = debugPrinter;
+		_file = theFile;
+	}
+	
+	@Override
+	public InputStream generate() {
+		InputStream _in = null;
+		
+		try {
+			_in = new FileInputStream(_file);
+		} catch (FileNotFoundException e) {
+			_dPrinter.printError(e.toString());
+		}
+		
+		return _in;
+	}
+
+	@Override
+	public String render() throws UnsupportedOperationException {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public int size() {
+		return ((int)_file.length()) * 2;
+	}
+
+	@Override
+	public String type() {
+		return "text/plain";
+	}
+	
+}
+
 /**
  * A revised version of <code>HtmlFileSystemPage</code>.
  * Which operates with a <code>File</code> object.
@@ -309,12 +375,17 @@ class HtmlFileSystemPage2 extends HtmlFileSystemPage {
 	@Override
 	public InputStream generate() {
 		InputStream _input=null;
-		try { //TODO: Figure how to implement this given the dumb complexity. Perhaps refactor this class out.
+		try { 
 			_input = new FileInputStream(_file);
 		} catch( IOException ioex ) {
 			_dPrinter.printError(ioex.toString());
 		}
 		return _input;
+	}
+
+	@Override
+	public int size() {
+		return (int)_file.length() * 2;
 	}
 }
 
@@ -345,8 +416,8 @@ abstract class HtmlFileSystemPage implements HttpContent {
 		if( !fileExist() )
 			throw new IllegalArgumentException("PathToFile");
 	
-		_404 = HttpPageFactory.new404Error(); 
-		_genericError = HttpPageFactory.newGenericError();
+		_404 = HttpContentFactory.new404Error(); 
+		_genericError = HttpContentFactory.newGenericError();
 	}
 	
 	/**
@@ -397,7 +468,7 @@ abstract class HtmlFileSystemPage implements HttpContent {
 
 	@Override
 	public int size() {
-		return render().getBytes().length; 
+		return render().getBytes().length * 2; 
 	}
 
 	@Override
@@ -406,11 +477,14 @@ abstract class HtmlFileSystemPage implements HttpContent {
 	}
 }
 
+/**
+ * Support to send image content
+ * @author FrankV
+ *
+ */
 class HttpImageFile implements HttpContent {
 	File _file;
 	DebugPrintable _dPrinter;
-	
-	InputStream _input;
 	
 	HttpImageFile( File pFile, DebugPrintable debugPrinter ) {
 		_file = pFile;
@@ -418,6 +492,8 @@ class HttpImageFile implements HttpContent {
 		
 		if( (!_file.exists()) || (!_file.isFile()) )
 			throw new IllegalArgumentException("_file");
+		
+		_dPrinter.printMessage("Loaded HttpImageFile for: " + pFile.getName());
 	}
 	
 	@Override
@@ -432,9 +508,11 @@ class HttpImageFile implements HttpContent {
 
 	@Override
 	public String type() {
-		if( _file.getName().endsWith(".gif") )
+		_dPrinter.printMessage( "Guessing type for file: " + _file.getName() );
+		
+		if( _file.getName().toLowerCase().endsWith(".gif") )
 			return "image/gif"; 
-		else if( _file.getName().endsWith(".jpg") || _file.getName().endsWith(".jpeg") )
+		else if( _file.getName().toLowerCase().endsWith(".jpg") || _file.getName().toLowerCase().endsWith(".jpeg") )
 			return "image/jpeg";
 		else //add if?
 			return "image/png";
@@ -442,6 +520,8 @@ class HttpImageFile implements HttpContent {
 
 	@Override
 	public InputStream generate() {
+		_dPrinter.printMessage( "Generating inputStream for " + _file.getName() );
+		InputStream _input = null;
 		try {
 			_input = new FileInputStream(_file);
 		} catch( IOException ioex ) {

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -49,8 +50,10 @@ class HttpClientHeadersImpl implements HttpClientHeaders {
 		
 		_head.add("HTTP/1.1 404 Page Not Found");
 		_head.add( String.format("Content-Length:%d", page.size()) );
-		_head.add( String.format("Content-Type: %s", page.type()) );
-
+		_head.add( String.format("Content-Type:%s", page.type()) );
+		_head.add( dateHeader() );
+		_head.add( serverNameVersion() );
+		
 		return _head;
 	}
 	
@@ -67,7 +70,9 @@ class HttpClientHeadersImpl implements HttpClientHeaders {
 		
 		_head.add("HTTP/1.1 500 Internal Server Error");
 		_head.add( String.format("Content-Length:%d", page.size()) );
-		_head.add( String.format("Content-Type: %s", page.type()) );
+		_head.add( String.format("Content-Type:%s", page.type()) );
+		_head.add( dateHeader() );
+		_head.add( serverNameVersion() );
 		
 		return _head;
 	}
@@ -83,10 +88,19 @@ class HttpClientHeadersImpl implements HttpClientHeaders {
 		_head.checkHttpPage( page );
 		
 		_head.add("HTTP/1.1 200 OK");
-		_head.add( String.format("Content-Length:%d", page.size()) );
+		_head.add( String.format("Content-Length: %d", page.size()) );
 		_head.add( String.format("Content-Type: %s", page.type()) );
+		_head.add( dateHeader() );
+		_head.add( serverNameVersion() );
 		
 		return _head;
+	}
+	
+	private static String serverNameVersion() {
+		return "Server: Frank Web Server 1.0";
+	}
+	private static String dateHeader() {
+		return new StringBuilder("Date: ").append( new Date() ).toString();
 	}
 	
 	private void checkHttpPage( HttpContent page ) {
@@ -214,8 +228,10 @@ class HttpClientHeadersImpl implements HttpClientHeaders {
 	public String toString() {
 		StringBuilder _sb = new StringBuilder();
 		for( String s : this ) {
-			_sb.append(s);
-			_sb.append("\n");
+			if( s != null ) {
+				_sb.append(s);
+				_sb.append("\r\n"); //_sb.append("\n");
+			}
 		}
 		
 		_sb.append(Terminator());

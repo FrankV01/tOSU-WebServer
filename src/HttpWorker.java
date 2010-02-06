@@ -1,3 +1,4 @@
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -32,14 +33,15 @@ class HttpWorker extends Thread {
 	 * Perform the process. <strong>not done</strong>
 	 */
 	public void run() {
-		PrintStream out = null;
+		OutputStream out = null;
+		PrintStream pOut = null;
 		BufferedReader in = null;
 		ArrayList<String> _clientCom = new ArrayList<String>(); 
 		
 		try {
-			out = new PrintStream( _sock.getOutputStream() );
 			in = new BufferedReader( new InputStreamReader(_sock.getInputStream()) );
-			
+			out = new BufferedOutputStream( _sock.getOutputStream() );
+			pOut = new PrintStream( out );
 			
 			//Just echo what the client sends - we should get at least one line...
 			while( in.ready() || (_clientCom.size() == 0) ) {
@@ -49,7 +51,8 @@ class HttpWorker extends Thread {
 			HttpContent _pg = null;
 			HttpClientHeaders _header = null;
 			
-			if( _clientCom.size() != 0 ) {
+			boolean _valid = (_clientCom.size() != 0 && (_clientCom.get(0).endsWith("HTTP/1.1") || _clientCom.get(0).endsWith("HTTP/1.0")) ); 
+			if( _valid ) {
 				
 				// This is an "always" message.
 				System.out.println( String.format("Processing Request for: %s", _clientCom.get(0)) );
@@ -61,33 +64,31 @@ class HttpWorker extends Thread {
 				
 				
 				try {
-					
 					String _path = new StringBuilder(_serveFromPath).append(_fileName).toString();
 					File _file = new File(_path);
 					
-					if( _file.isDirectory() ) {
-						_pg = HttpPageFactory.newDirectoryListingPage(_file, _dPrinter);
-					} else {
-						_pg = HttpPageFactory.newFileSystemPage(_file, _dPrinter);
-					}
+					_pg = HttpContentFactory.byFileExtention(_file, _dPrinter);
 					_header = HttpClientHeadersImpl.newSuccessHeaders(_pg);
 				} catch( IllegalArgumentException ex ) {
 					//Terrible way to find out if the file exists
 					// but this is just an example program.
-					_pg = HttpPageFactory.new404Error();
+					_pg = HttpContentFactory.new404Error();
 					_header = HttpClientHeadersImpl.new404ErrorHeaders(_pg);
 				}
 			} else {
 				//No info received from the client? Server probably screwed up.
 				_dPrinter.printError("No text buffered from client");
 				
-				_pg = HttpPageFactory.newGenericError();
+				_pg = HttpContentFactory.newGenericError();
 				_header = HttpClientHeadersImpl.new500ErrorHeaders(_pg);
 			}
 			
-			out.print( _header.toString() );
+			pOut.print( _header.toString() );
+			
 			//out.print(_pg.render());
 			sendFile( _pg.generate(), out );
+			
+			out.flush();
 			
 			_sock.close();
 			
@@ -109,7 +110,7 @@ class HttpWorker extends Thread {
     {
         try {
             byte[] buffer = new byte[1000];
-            while (file.available()>0) {
+            while (file.available() > 0) {
                 out.write(buffer, 0, file.read(buffer));
             }
         } catch (IOException e) { 
