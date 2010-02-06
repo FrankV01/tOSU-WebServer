@@ -21,7 +21,7 @@ class BasicArgumentProcessor implements ArgumentProcessor {
 		String[] sSplit;
 		for( String s : args ) {
 			
-			sSplit = s.split("\\:");
+			sSplit = s.split("\\=");
 			sSplit[0] = sSplit[0].replace( new StringBuffer("-"), new StringBuffer("") );
 			
 			if( _search.containsKey(sSplit[0]) ) //Use the map to search for and replace items.
@@ -44,7 +44,7 @@ class BasicArgumentProcessor implements ArgumentProcessor {
 	 */
 	public String getHelp() {
 		StringBuilder _sb = new StringBuilder("\n");
-		final String template = "  -%s:%s \t%s";
+		final String template = "  -%s=%s \t%s";
 		_sb.append( _title ).append(" - ");
 		_sb.append( _description ).append("\n\nSwitches:\n");
 		for( Argument<String> a : _values ) {
