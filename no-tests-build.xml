@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
 	========================================================================
-	Basic build file for InetServer and Client. 
+	Basic build file for MyWebServer.
 	Based on http://ant.apache.org/manual/using.html#example
 	
 	(c) 2010 Frank Villasenor - LGPL
@@ -13,9 +13,9 @@
 	========================================================================
 -->
 
-<project name="InetClientServer" default="build">
+<project name="WebServer" default="build">
 	<description>
-This is a basic build file for the "InetClientServer" programs.
+This is a basic build file for the "WebServer" programs.
 
 This does not produce a jar file; it does build or a clean build.
 
@@ -96,7 +96,7 @@ ${build}
 		      <exclude name="${doc}/**" />
 		    </fileset>
 			
-			<doctitle><![CDATA[<h1>CSC-435 - Joke Server / Client</h1>]]></doctitle>
+			<doctitle><![CDATA[<h1>CSC-435 - Web Server</h1>]]></doctitle>
 			<bottom><![CDATA[<i>Copyright &#169; 2010 Frank Villasenor. All Rights Reserved.</i>]]></bottom>
 			<group title="Group 1 Packages" packages="${src}.*" />
 
