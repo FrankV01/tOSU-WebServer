@@ -1,8 +1,0 @@
-HTTP/1.1 200 OK
-Date: Sun, 07 Feb 2010 00:18:08 GMT
-Server: Apache
-Keep-Alive: timeout=15, max=100
-Connection: Keep-Alive
-Transfer-Encoding: chunked
-Content-Type: text/html; charset=UTF-8
-

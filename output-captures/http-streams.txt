@@ -1,0 +1,76 @@
+====================================================================================
+-- First is the output from the listener program -- "java WebServer -l"
+====================================================================================
+
+Debug mode is enabled. Loaded settings: 
+  Opt.	Curr. Setting	Info
+----------------------------------------------
+ -f	.		The directory to serve files from.
+ -d	true		Enable Debug Mode (Alt. -d)
+ -p	2540		The port to serve the Client peice on.
+ -l	true		Use 'MyListner' which echo's requests to the console. (Alt. -l)
+ -?	false		Show Help and exit (Alt. -?).
+
+
+Server Starting
+GET /dog.txt HTTP/1.1
+Host: localhost:2540
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7 (.NET CLR 3.5.30729)
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+
+-> No more data
+GET /cat.html HTTP/1.1
+Host: localhost:2540
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7 (.NET CLR 3.5.30729)
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+-> No more data
+GET /lion.wml HTTP/1.1
+Host: localhost:2540
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7 (.NET CLR 3.5.30729)
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+
+-> No more data
+
+====================================================================================
+-- Next is the captured results the server sent to my telnet session for dog.txt
+====================================================================================
+HTTP/1.1 200 OK
+Date: Sun, 07 Feb 2010 00:20:56 GMT
+Server:Apache
+Last-Modified: Mon, 01 Feb 2010 01:04:36 GMT
+Etag: "1a5aac-37-4b6628a4"
+Accept-Ranges: bytes
+Content-Length: 55
+Keep-Alive: timeout=15, max=100
+Connection: Keep-Alive
+Content-Type: text/plain; charset=UTF-8
+
+
+====================================================================================
+-- Next is the captured results the server sent to my telnet session for cat.html
+====================================================================================
+HTTP/1.1 200 OK
+Date: Sun, 07 Feb 2010 00:18:08 GMT
+Server: Apache
+Keep-Alive: timeout=15, max=100
+Connection: Keep-Alive
+Transfer-Encoding: chunked
+Content-Type: text/html; charset=UTF-8
+
