@@ -7,7 +7,7 @@
 	</head>
 	<body lang="en-US" dir="LTR">
 		<h1>Welcome</h1>
-		<p>Welcome to my Joke Server project. I hope you have a great visit.
+		<p>Welcome to my Web Server project. I hope you have a great visit.
 		This document contains some quick notes on building and running the
 		programs.</p>
 		
@@ -17,22 +17,20 @@
 		two methods are outlined below.</p>
 		
 		<h3>javac</h3>
-		<p>The are three main files that must be compiled. Any dependencies
+		<p>The is a single file that must be compiled Any dependencies
 		should be compiled inherently.</p>
 		
-		<p>The files are:</p>
+		<p>The file is:</p>
 		
 		<ul>
-			<li><code>JokeClient.java</code> </li>
-			<li><code>JokeClientAdmin.java</code> </li>
-			<li><code>JokeServer.java</code> </li>
+			<li><code>WebServer.java</code> </li>
 		</ul>
 		
-		<p>To compile the files, simply execute <code>javac</code> for each
-		source file. The following are examples.</p>
+		<p>To compile the file and all related files, simply issue the following
+		command:</p>
 		
 		<ul>
-			<li><code>javac file.java</code></li>
+			<li><code>javac WebServer.java</code></li>
 		</ul>
 			
 		<h3>Ant [<em>Optional</em>]</h3>
@@ -50,18 +48,43 @@
 		-projecthelp</code> command. This will simply list all build targets
 		but the default is the most commonly used one.</p>
 		
-		<h2>Running</h2>
-		<p>...</p>
+		<h2>Running the Web Server</h2>
+		<p>Execution of the program is very simple and stright forward. There are 
+		some command line options and those are layed out below along with 
+		the default values. <strong>The web server, by default, runs on port <code>2540</code>
+		as required by the assignment.</strong></p>
 		
-		<h3>Web Server</h3>
-		<p>...</p>
+		<p>For simpliciies sake, here are some example executions along with an expliation</p>
+		<table border="1" cellpadding="1" cellspacing="1">
+			<tr style="background-color:lightgray;font-weight:bold;">
+				<th>Start up Command</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>java WebServer</code></td>
+				<td><p>Most simplistic execution. Starts a web server serving files
+				from the directory that the class file resides in. No debugging information
+				is outputted.</p></td>
+			</tr>
+			<tr>
+				<td><code>java WebServer -l</code></td>
+				<td><p>Start the sever in Listener mode. This uses MyListener.java</p></td>
+			</tr>
+			<tr>
+				<td><code>java WebServer -d -f=../pages</code></td>
+				<td><p>Start the web server with debug mode enabled. For files, look
+				one directory back in another directory called pages.</p></td>
+			</tr>
+		</table>
+		
+		<h3>The complete command line option descriptions</h3>
 		
 		<table border="1" cellpadding="0" cellspacing="1">
 			<tr style="background-color:lightgray;font-weight:bold;">
-				<td>Command Switch</td>
-				<td>Command Name</td>
-				<td>Default</td>
-				<td>Description</td>
+				<th>Command Switch</th>
+				<th>>Command Name</th>
+				<th>>Default</th>
+				<th>>Description</th>
 			</tr>
 			<tr>
 				<td><code>-?</code></td>
@@ -71,16 +94,10 @@
 					on how to use the program.</td>
 			</tr>
 			<tr>
-				<td><code>-ap</code></td>
-				<td>Admin Port</td>
-				<td>8002</td>
-				<td>The port to run the admin server on.</td>
-			</tr>
-			<tr>
 				<td><code>-p</code></td>
-				<td>Client Port</td>
-				<td>8001</td>
-				<td>The port to run the client server on.</td>
+				<td>Server Port</td>
+				<td>2540</td>
+				<td>The port to serve from.</td>
 			</tr>
 			<tr>
 				<td><code>-d</code></td>
@@ -88,6 +105,23 @@
 				<td>Off</td>
 				<td>Enable debug mode which simply prints out more detailed status
 					messages.</td>
+			</tr>
+			<tr>
+				<td><code>-l</code></td>
+				<td>MyListern</td>
+				<td>Off</td>
+				<td>Execute the server utlizing the MyListener.java class file. This turns
+				the server in to the Client Lister which was used to gather the client output.</td>
+			</tr>
+			<tr>
+				<td><code>-f</code></td>
+				<td>Serve-From-Directory</td>
+				<td><code>.</code> (e.g. the current directory)</td>
+				<td>This is the directory from which the html file to serve come from. The default
+				is the directory the server is running from. You can use either relative or absolete
+				paths with this option. <br /><br />As an option, to serve files from C:\wwwroot\pages\
+				you'd use the option as: <code>-f=C:\wwwroot\pages</code>.<br /> Start up checks are performed
+				to loosly validate the input.</td>
 			</tr>
 		</table>
 	</body>
