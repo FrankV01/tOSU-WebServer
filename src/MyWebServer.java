@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.util.List;
 
 
-public class WebServer {
+public class MyWebServer {
 	private enum ServerMode {
 		Listener,
 		WebServer
