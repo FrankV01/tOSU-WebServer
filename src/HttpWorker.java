@@ -104,7 +104,7 @@ class HttpWorker extends Thread {
 	 * adapted from "A Web Server in 150 Lines"
 	 * @param file The input file
 	 * @param out the stream to output too.
-	 * @see http://www.brics.dk/~amoeller/WWW/javaweb/server.html
+	 * @see <a href="http://www.brics.dk/~amoeller/WWW/javaweb/server.html">http://www.brics.dk/~amoeller/WWW/javaweb/server.html</a>
 	 */
     private void sendFile(InputStream file, OutputStream out)
     {

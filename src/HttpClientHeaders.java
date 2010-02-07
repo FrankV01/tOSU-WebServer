@@ -19,7 +19,7 @@ public interface HttpClientHeaders extends List<String> {
 	
 	/**
 	 * Should be implemented to produce the required headers.
-	 * @return
+	 * @return The headers as a string
 	 */
 	String toString();
 }
@@ -42,7 +42,6 @@ class HttpClientHeadersImpl implements HttpClientHeaders {
 	 * A factory method to generate a basic 404 Client Header
 	 * @param page - The page we are generating the header for.
 	 * @return the constructed, ready to <code>toString()</code> HttpClientHeaders object.
-	 * @see newSuccessHeaders
 	 */
 	public static HttpClientHeaders new404ErrorHeaders(HttpContent page) {
 		HttpClientHeadersImpl _head = new HttpClientHeadersImpl();
@@ -61,7 +60,6 @@ class HttpClientHeadersImpl implements HttpClientHeaders {
 	 * A factory method to return a basic 500 (internal server error) header.
 	 * @param page The page which will inform the end client of the error. 
 	 * @return The header, ready to use.
-	 * @see new404ErrorHeaders
 	 */
 	public static HttpClientHeaders new500ErrorHeaders(HttpContent page) {
 		HttpClientHeadersImpl _head = new HttpClientHeadersImpl();
@@ -81,7 +79,6 @@ class HttpClientHeadersImpl implements HttpClientHeaders {
 	 * A factory method to generate a basic success client header
 	 * @param page the Page we are generating the header for. Required for page size.
 	 * @return The constructed, ready to <code>toString()</code> HttpClientHeaders object.
-	 * @see new404ErrorHeaders
 	 */
 	public static HttpClientHeaders newSuccessHeaders(HttpContent page) {
 		HttpClientHeadersImpl _head = new HttpClientHeadersImpl();

@@ -8,8 +8,11 @@ import java.net.Socket;
  * Copy your InetServer.java source (or your jokeserver) to a file 
  * called MyListener.java. Modify, and simplify, the code so that 
  * it simply displays everything sent to it on the server console.
+ * 
+ * <strong>You can start this class by invoking:</strong> <code>java MyWebServer -l</code>
+ * 
  * @author FrankV
- * @see http://condor.depaul.edu/~elliott/435/hw/programs/
+ * @see <a href="http://condor.depaul.edu/~elliott/435/hw/programs/">http://condor.depaul.edu/~elliott/435/hw/programs/</a>
  */
 class MyListener implements Runnable {
 	

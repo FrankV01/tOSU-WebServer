@@ -4,8 +4,22 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
-
+/**
+ * The main entry point for the program.
+ * Please see comments.html for information 
+ * on how to start this program. 
+ * 
+ * You can also use: <code>java MyWebServer -?</code>
+ * @author Frank
+ *
+ */
 public class MyWebServer {
+	
+	/**
+	 * Different modes of the server.
+	 * @author Frank
+	 *
+	 */
 	private enum ServerMode {
 		Listener,
 		WebServer
@@ -20,6 +34,8 @@ public class MyWebServer {
 	private static String _pathToServeFrom;
 	private static DebugPrintable _dPrinter;
 	private static ArgumentProcessor _args;
+	
+	
 	/**
 	 * Main program entry point. It starts the web server with
 	 * the given arguments.

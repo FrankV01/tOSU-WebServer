@@ -1,7 +1,13 @@
 
 import java.util.Map;
 
-
+/**
+ * An interface to deal with HTTP file requests.
+ * Generally, this interface is implemented on a sub
+ * class of File (but this doesn't have to be the case)
+ * @author Frank
+ *
+ */
 public interface HttpFileRequest {
 	String getName();
 	

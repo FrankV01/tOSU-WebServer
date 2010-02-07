@@ -5,6 +5,12 @@ import java.util.Map;
 
 //Should use factory but... meh.
 
+/**
+ * A basic implementation of HttpFileRequest. Simple
+ * provides some basic handling to parse a request
+ * with a query string such as getting the arguments
+ * or getting the filename without the arguments
+ */
 class HttpFile extends File implements HttpFileRequest {
 
 	/**

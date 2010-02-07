@@ -30,7 +30,7 @@ public interface HttpContent {
 	/**
 	 * Provides an InputStream of the content.
 	 * @return An input stream used to output this method.
-	 * @see http://www.brics.dk/~amoeller/WWW/javaweb/server.html
+	 * @see <a href="http://www.brics.dk/~amoeller/WWW/javaweb/server.html">http://www.brics.dk/~amoeller/WWW/javaweb/server.html</a>
 	 */
 	InputStream generate();
 	
@@ -290,7 +290,11 @@ class HtmlDirectoryListingPage extends StringHtmlOnlyPage implements HttpContent
 	}
 	
 
-	
+	/**
+	 * An implementation of FilenameFilter that only allows
+	 * non-hidden folders from being 'accepted'
+	 * @author Frank
+	 */
 	class folderFilter implements FilenameFilter {
 
 		@Override
@@ -300,6 +304,13 @@ class HtmlDirectoryListingPage extends StringHtmlOnlyPage implements HttpContent
 		}
 	}
 	
+	/**
+	 * An implementation of Filename Filter that only 
+	 * allows desired files types to be shown on this server.
+	 * (*.htm[l], *.jp[e]g, *.gif, *.txt)
+	 * @author Frank
+	 *
+	 */
 	class HttpAllowedFilesFilter implements FilenameFilter {
 
 		@Override
