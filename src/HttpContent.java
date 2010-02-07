@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -264,10 +265,11 @@ class HtmlDirectoryListingPage extends StringHtmlOnlyPage implements HttpContent
 			if( !_rootDir.equals(_dir) ) //Show the up.
 				_sb.append( "<li><a href=\"..\">[Up one directory]</li>" );
 			
-			for( String s : Arrays.asList(_dir.list()) )  {
-				String _buf = new StringBuilder(_dir.getPath()).append("/").append(s).toString();
-				String t = (new File(_buf).isDirectory()) ? "folder" : "file";
-				_sb.append( String.format("<li><a href=\"%s\">%s</a> - [<em>%s</em>]</li>", s, s, t) );
+			for( String s : Arrays.asList(_dir.list(new folderFilter())) )  {
+				_sb = addItem(s, _sb);
+			}
+			for( String s : Arrays.asList(_dir.list(new HttpAllowedFilesFilter())) ) {
+				_sb = addItem(s, _sb);
 			}
 			_sb.append("</ul>");
 			
@@ -277,6 +279,40 @@ class HtmlDirectoryListingPage extends StringHtmlOnlyPage implements HttpContent
 		}
 		
 		return _buf;
+	}
+	
+	private StringBuilder addItem( String curItm, StringBuilder curList ) {
+		String _buf = new StringBuilder(_dir.getPath()).append("/").append(curItm).toString();
+		String t = (new File(_buf).isDirectory()) ? "folder" : "file";
+		curList.append( String.format("<li><a href=\"%s\">%s</a> - [<em>%s</em>]</li>", curItm, curItm, t) );
+		
+		return curList;
+	}
+	
+
+	
+	class folderFilter implements FilenameFilter {
+
+		@Override
+		public boolean accept(File dir, String name) {
+			File subFile = new File(dir, name);
+			return subFile.isDirectory() && (!subFile.isHidden());
+		}
+	}
+	
+	class HttpAllowedFilesFilter implements FilenameFilter {
+
+		@Override
+		public boolean accept(File file, String name) {
+			File subFile = new File(file, name);
+			return isAllowed(subFile, ".html") || isAllowed(subFile, ".htm") || 
+				isAllowed(subFile, ".jpg") || isAllowed(subFile, ".jpeg") || isAllowed(subFile, ".gif")
+				|| isAllowed(subFile, ".txt");
+		}
+
+		private boolean isAllowed(File file, String check) {
+			return ( file.getName().toLowerCase().endsWith(check) );
+		}
 	}
 }
 
