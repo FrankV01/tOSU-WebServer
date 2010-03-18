@@ -1,11 +1,25 @@
 <?xml version="1.0"?>
 <!--
 	========================================================================
-	Basic build file for Web Server. 
+	Basic ant build file for Web Server. 
 	Based on http://ant.apache.org/manual/using.html#example
+    ------------------------------------------------------------------------	
+	tOSU-WebServer | An educational HTTP Server
+	Copyright (C) 2010  Frank Villasenor <Frank@TheOpenSourceU.com>
 	
-	(c) 2010 Frank Villasenor - LGPL
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    ------------------------------------------------------------------------	
 	Run "ant -projecthelp" to get a list of available targets.
 	
 	See http://ant.apache.org/manual/install.html#installing for 
@@ -163,7 +177,7 @@ ${build}
 		      <exclude name="${doc}/**" />
 		    </fileset>
 			
-			<doctitle><![CDATA[<h1>CSC-435 - Web Server</h1>]]></doctitle>
+			<doctitle><![CDATA[<h1>tOSU - Web Server</h1>]]></doctitle>
 			<bottom><![CDATA[<i>Copyright &#169; 2010 Frank Villasenor. All Rights Reserved.</i>]]></bottom>
 			<group title="Group 1 Packages" packages="${src}.*" />
 
