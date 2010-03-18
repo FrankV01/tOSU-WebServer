@@ -167,18 +167,24 @@ ${build}
 			author="true"
            	version="true"
            	use="true"
-           	windowtitle="Joker Server - CSC-435 Project"
+           	windowtitle="${project-name} | JavaDocs"
 			access="private">
 			
+			<packageset dir="src" defaultexcludes="yes">
+				<include name="com/theOpenSourceU/webserver/**"/>
+				<!-- <exclude name="com/dummy/test/doc-files/**"/> -->
+			</packageset>
+
+			<!--
 		    <fileset dir="${src}" defaultexcludes="yes">
 		      <include name="**.java"/>
 		    	
 		      <exclude name="**.txt"/>
 		      <exclude name="**.log" />
 		      <exclude name="${doc}/**" />
-		    </fileset>
+		    </fileset> -->
 			
-			<doctitle><![CDATA[<h1>tOSU - Web Server</h1>]]></doctitle>
+			<doctitle><![CDATA[<h1>${project-name}</h1>]]></doctitle>
 			<bottom><![CDATA[<i>Copyright &#169; 2010 Frank Villasenor. All Rights Reserved.</i>]]></bottom>
 			<group title="Group 1 Packages" packages="${src}.*" />
 
