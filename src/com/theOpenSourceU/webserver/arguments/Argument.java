@@ -15,29 +15,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
-import java.util.Arrays;
 
+package com.theOpenSourceU.webserver.arguments;
 
 /**
- * Contains String Utilities
+ * Interface to an Argument to be used by argument Processors.
  * @author Frank
  *
+ * @param <T> The type to expect.
  */
-class StringUtils {
+public interface Argument<T> {
 	
 	/**
-	 * Repeats a single character.
-	 * @param Char
-	 * @param count How many times. 
-	 * @return The string of repeated chars. 
+	 * Defaulted by the constructor.
+	 * @return the value (i.e. setting)
 	 */
-	public static String repeat(char Char, int count ) {
-		if( count <= 0 )
-			return "";
-		
-		char[] chars = new char[count];
-		Arrays.fill(chars, Char);
-		return new String(chars);
-	}
+	public T getValue();
+	
+	/**
+	 * Set the value or setting.
+	 * @param value 
+	 */
+	public void setValue( T value );
+	
+	/********************************************/
+	
+	/**
+	 * The key as provided by the constructor.
+	 * @return
+	 */
+	public String getKey();
+	
+	
+	/**
+	 * A message for the help screen.
+	 * @return the message.
+	 */
+	public String getHelp();
+	
 }

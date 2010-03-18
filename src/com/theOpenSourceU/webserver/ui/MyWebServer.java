@@ -15,12 +15,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
+package com.theOpenSourceU.webserver.ui;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+
+import com.theOpenSourceU.webserver.arguments.*;
+import com.theOpenSourceU.webserver.io.*;
+import com.theOpenSourceU.webserver.http.*;
 
 /**
  * The main entry point for the program.
@@ -100,9 +106,9 @@ public class MyWebServer {
 		}
 		
 		if( Boolean.parseBoolean(_args.getValue("d")) )
-			_dPrinter = new debugPrinter();
+			_dPrinter = new DebugPrinter();
 		else
-			_dPrinter = new noDebugPrinter();
+			_dPrinter = new NoDebugPrinter();
 		
 		
 		String tmpPort = _args.getValue("p");

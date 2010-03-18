@@ -16,39 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Interface to an Argument to be used by argument Processors.
- * @author Frank
- *
- * @param <T> The type to expect.
- */
-interface Argument<T> {
-	
-	/**
-	 * Defaulted by the constructor.
-	 * @return the value (i.e. setting)
-	 */
-	public T getValue();
-	
-	/**
-	 * Set the value or setting.
-	 * @param value 
-	 */
-	public void setValue( T value );
-	
-	/********************************************/
-	
-	/**
-	 * The key as provided by the constructor.
-	 * @return
-	 */
-	public String getKey();
-	
-	
-	/**
-	 * A message for the help screen.
-	 * @return the message.
-	 */
-	public String getHelp();
-	
+package com.theOpenSourceU.webserver.arguments;
+
+// TODO: This class should be package private. Need 
+//  to switch this back.
+public class ArgumentInfoFormatter {
+	public static String getArgumentInfo(ArgumentProcessor toFormat) {
+		StringBuilder _sb = new StringBuilder();
+		
+		_sb.append( "\nDebug mode is enabled. Loaded settings: \n" );
+		_sb.append( "  Opt.\tCurr. Setting\tInfo\n");
+		_sb.append( "----------------------------------------------\n" );
+		for( Argument<String> a : toFormat.toMap().values() ) {
+			_sb.append( String.format(" -%s\t%s\t\t%s\n", a.getKey(), a.getValue(), a.getHelp()) );
+		}
+		
+		_sb.append( "\n" );
+		
+		return _sb.toString();
+	}
 }

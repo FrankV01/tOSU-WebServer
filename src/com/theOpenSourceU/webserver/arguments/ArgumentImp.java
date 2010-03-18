@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+package com.theOpenSourceU.webserver.arguments;
+
 public class ArgumentImp<T> implements Argument<T> {
 
 	String _key;

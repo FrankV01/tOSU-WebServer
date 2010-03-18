@@ -15,7 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
+package com.theOpenSourceU.webserver.http;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,12 +28,13 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import com.theOpenSourceU.webserver.io.*;
 
 /**
  * Suppose to 'work' upon a connection for a std. client.
- * 
+ *  TODO: This class should be package-private. Need to switch...
  */
-class HttpWorker extends Thread { 
+public class HttpWorker extends Thread { 
 	Socket _sock;	
 	String _serveFromPath;
 	DebugPrintable _dPrinter;

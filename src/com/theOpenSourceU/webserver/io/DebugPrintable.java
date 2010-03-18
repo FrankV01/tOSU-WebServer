@@ -15,22 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
-import java.util.ArrayList;
-import java.util.List;
 
+package com.theOpenSourceU.webserver.io;
 
-public class ArgumentFactory {
-	public static Argument<String> newArgument( String Key, String Default, String HelpMessage ) {
-		return new ArgumentImp<String>( Key, Default, HelpMessage );
-	}
+/**
+ * Instances of classes that implement this interface
+ * are used to provide debug messages. There is no promise that
+ * a print request will actually go to the console. It is up to the 
+ * implementation to handle the output
+ * @author Frank
+ *
+ */
+public interface DebugPrintable {
+	/**
+	 * Print or record a informational message. 
+	 * @param Message The message
+	 */
+	void printMessage(String Message);
 	
-	public static List<Argument<String>> newArgumentList() {
-		return new ArrayList< Argument<String> >();
-	}
-	
-	public static ArgumentProcessor newArgumentProcessor( String[] args, 
-			List<Argument<String>> PrefilledDefaults ) {
-		return new BasicArgumentProcessor(args, PrefilledDefaults);
-	}
+	/**
+	 * Print or record a error message.
+	 * @param Message The message
+	 */
+	void printError(String Message);
 }

@@ -16,28 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.net.Socket;
+package com.theOpenSourceU.webserver.arguments;
 
-/**
- * Provides new instances of different worker threads
- * for the servers.
- * @author Frank
- *
- */
-final class WorkerFactory {
+import java.util.ArrayList;
+import java.util.List;
 
-	/**
-	 * Provides new server worker threads which handle
-	 * admin related stuff. Such as the ability to change
-	 * type of server or to shut down the server.
-	 * @param s The socket to communicate over
-	 * @return The instance.
-	 */
-	public static Thread newServerWorker(Socket s, String PathToServeFrom, DebugPrintable DebugPrinter) {
-		return new HttpWorker(s, PathToServeFrom, DebugPrinter);
+
+public class ArgumentFactory {
+	public static Argument<String> newArgument( String Key, String Default, String HelpMessage ) {
+		return new ArgumentImp<String>( Key, Default, HelpMessage );
 	}
 	
-	public static Thread newListener(Socket s, DebugPrintable DebugPrinter) {
-		return new Thread(new MyListener(s, DebugPrinter));
+	public static List<Argument<String>> newArgumentList() {
+		return new ArrayList< Argument<String> >();
+	}
+	
+	public static ArgumentProcessor newArgumentProcessor( String[] args, 
+			List<Argument<String>> PrefilledDefaults ) {
+		return new BasicArgumentProcessor(args, PrefilledDefaults);
 	}
 }

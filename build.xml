@@ -3,7 +3,7 @@
 	========================================================================
 	Basic ant build file for Web Server. 
 	Based on http://ant.apache.org/manual/using.html#example
-    ------------------------------------------------------------------------	
+    -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=	
 	tOSU-WebServer | An educational HTTP Server
 	Copyright (C) 2010  Frank Villasenor <Frank@TheOpenSourceU.com>
 	
@@ -19,7 +19,8 @@
 	
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    ------------------------------------------------------------------------	
+    -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    	
 	Run "ant -projecthelp" to get a list of available targets.
 	
 	See http://ant.apache.org/manual/install.html#installing for 

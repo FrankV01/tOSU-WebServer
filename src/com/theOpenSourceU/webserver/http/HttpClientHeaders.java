@@ -15,7 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
+package com.theOpenSourceU.webserver.http;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -23,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import com.theOpenSourceU.webserver.io.*;
 
 /**
  * Represents the HTTP Headers that must be sent back to

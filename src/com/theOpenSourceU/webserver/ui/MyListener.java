@@ -15,12 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
+package com.theOpenSourceU.webserver.ui;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+
+import com.theOpenSourceU.webserver.io.*;
 
 /**
  * Copy your InetServer.java source (or your jokeserver) to a file 

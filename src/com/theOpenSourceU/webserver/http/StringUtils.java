@@ -16,19 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ArgumentInfoFormatter {
-	public static String getArgumentInfo(ArgumentProcessor toFormat) {
-		StringBuilder _sb = new StringBuilder();
+package com.theOpenSourceU.webserver.http;
+
+import java.util.Arrays;
+
+
+/**
+ * Contains String Utilities
+ * @author Frank
+ *
+ */
+class StringUtils {
+	
+	/**
+	 * Repeats a single character.
+	 * @param Char
+	 * @param count How many times. 
+	 * @return The string of repeated chars. 
+	 */
+	public static String repeat(char Char, int count ) {
+		if( count <= 0 )
+			return "";
 		
-		_sb.append( "\nDebug mode is enabled. Loaded settings: \n" );
-		_sb.append( "  Opt.\tCurr. Setting\tInfo\n");
-		_sb.append( "----------------------------------------------\n" );
-		for( Argument<String> a : toFormat.toMap().values() ) {
-			_sb.append( String.format(" -%s\t%s\t\t%s\n", a.getKey(), a.getValue(), a.getHelp()) );
-		}
-		
-		_sb.append( "\n" );
-		
-		return _sb.toString();
+		char[] chars = new char[count];
+		Arrays.fill(chars, Char);
+		return new String(chars);
 	}
 }
