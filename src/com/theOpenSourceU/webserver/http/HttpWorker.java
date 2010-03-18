@@ -32,9 +32,9 @@ import com.theOpenSourceU.webserver.io.*;
 
 /**
  * Suppose to 'work' upon a connection for a std. client.
- *  TODO: This class should be package-private. Need to switch...
+ * 
  */
-public class HttpWorker extends Thread { 
+final class HttpWorker extends Thread { 
 	Socket _sock;	
 	String _serveFromPath;
 	DebugPrintable _dPrinter;

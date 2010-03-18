@@ -16,21 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.theOpenSourceU.webserver.ui;
+package com.theOpenSourceU.webserver.http;
 
 import java.net.Socket;
 
 import com.theOpenSourceU.webserver.io.*;
-import com.theOpenSourceU.webserver.http.*;
+
 
 /**
  * Provides new instances of different worker threads
- * for the servers. [Note: Should be moved to the http package
- * once MyListern is removed.]
+ * for the servers.
  * @author Frank
  *
  */
-final class WorkerFactory {
+final public class WorkerFactory {
 
 	/**
 	 * Provides new server worker threads which handle

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.theOpenSourceU.webserver.ui;
+package com.theOpenSourceU.webserver.http;
 
 import java.io.BufferedReader;
 import java.io.IOException;
