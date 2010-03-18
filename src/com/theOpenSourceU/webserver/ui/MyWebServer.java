@@ -90,7 +90,7 @@ public class MyWebServer {
 	private static void processArguments(String[] args) {
 		List<Argument<String>> _defaults = ArgumentFactory.newArgumentList();
 		_defaults.add( ArgumentFactory.newArgument( "?", "false", "Show Help and exit (Alt. -?).") );
-		_defaults.add( ArgumentFactory.newArgument( "p", "2540", "The port to serve the Client peice on.") );
+		_defaults.add( ArgumentFactory.newArgument( "p", "80", "The port to serve the Client peice on.") );
 		_defaults.add( ArgumentFactory.newArgument( "d", "false", "Enable Debug Mode (Alt. -d)") );
 		_defaults.add( ArgumentFactory.newArgument( "l", "false", "Use 'MyListner' which echo's requests to the console. (Alt. -l)"));
 		_defaults.add( ArgumentFactory.newArgument( "f", ".", "The directory to serve files from." ));
@@ -106,9 +106,9 @@ public class MyWebServer {
 		}
 		
 		if( Boolean.parseBoolean(_args.getValue("d")) )
-			_dPrinter = new DebugPrinter();
+			_dPrinter = DebugPrintable.DEFAULTIMPL;
 		else
-			_dPrinter = new NoDebugPrinter();
+			_dPrinter = DebugPrintable.ERRORONLY;
 		
 		
 		String tmpPort = _args.getValue("p");

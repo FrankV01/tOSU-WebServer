@@ -24,7 +24,7 @@ package com.theOpenSourceU.webserver.io;
  * instance prints to the console via std. output 
  * or error.
  */
-public class DebugPrinter implements DebugPrintable {
+class DebugPrinter implements DebugPrintable {
 	
 	public DebugPrinter() { }
 

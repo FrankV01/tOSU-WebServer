@@ -27,6 +27,12 @@ package com.theOpenSourceU.webserver.io;
  *
  */
 public interface DebugPrintable {
+	/** Default implementation to report errors only. Messages are ignored */
+	public static DebugPrintable ERRORONLY = new NoDebugPrinter();
+	
+	/** Default implementation */
+	public static DebugPrintable DEFAULTIMPL = new DebugPrinter();
+
 	/**
 	 * Print or record a informational message. 
 	 * @param Message The message

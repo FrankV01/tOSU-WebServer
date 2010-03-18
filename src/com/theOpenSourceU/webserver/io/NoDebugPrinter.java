@@ -26,7 +26,7 @@ package com.theOpenSourceU.webserver.io;
  * @author Frank
  *
  */
-public final class NoDebugPrinter extends DebugPrinter implements DebugPrintable  {
+final class NoDebugPrinter extends DebugPrinter implements DebugPrintable  {
 	
 	/**
 	 * Ignore the message; don't print anything
