@@ -32,9 +32,6 @@
 	<description>
 This is a basic build file for the "Web Server" programs.
 
-This does not produce a jar file; it does build and run 
-any unit tests. 
-
 Unit tests must be in:
 ${tests} 
 
@@ -50,12 +47,14 @@ ${build}
 	<property name="src" location="src" />
 	<property name="tests" location="tests" />
 	<property name="build" location="build" />
-	<!-- <property name="dist" location="dist" /> -->
 	<property name="doc" location="javadocs" />
 	
-	<property name="project-name" value="InetServerClient" />
+	<property name="project-name" value="tOSU-WebServer" />
 	<property name="test.pat" value="**/*test*.java" />
 	<property name="compiler.args" value="-Xlint" />
+	<property name="main.name" 
+		value="com.theOpenSourceU.webserver.ui.MyWebServer" />
+	<property name="user.name" value="Frank Villasenor" />
 	
 	<target name="init">
 		<echo>Project: ${project-name}</echo>
@@ -132,6 +131,7 @@ ${build}
 		<delete dir="${build}" />
 		<!-- <delete dir="${dist}" /> -->
 		<delete dir="${doc}" />
+		
 	</target>
 	
 	<target 
@@ -183,5 +183,23 @@ ${build}
 			<group title="Group 1 Packages" packages="${src}.*" />
 
 		</javadoc>
+	</target>
+	
+	<!-- Build jar --> 
+	<target name="jar" depends="clean-build-test" 
+		description="creates an executable jar file. Requires a clean-build-test">
+			
+		<jar
+		   destfile="${build}/${project-name}.jar"
+		   basedir="${build}"
+		   excludes="${test.pat}">
+		   
+		  <manifest>
+			<attribute name="Built-By" value="${user.name}"/>
+			<attribute name="Main-Class" value="${main.name}"/>
+		  </manifest>
+		  
+		</jar>
+		
 	</target>
 </project>
