@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.theOpenSourceU.webserver.io;
+package com.theOpenSourceU.webserver.debugutil;
 
 
 /**

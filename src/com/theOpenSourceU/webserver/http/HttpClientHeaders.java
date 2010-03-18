@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import com.theOpenSourceU.webserver.io.*;
+import com.theOpenSourceU.webserver.debugutil.*;
 
 /**
  * Represents the HTTP Headers that must be sent back to

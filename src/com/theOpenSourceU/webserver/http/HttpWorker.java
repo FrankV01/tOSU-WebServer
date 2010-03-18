@@ -28,7 +28,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import com.theOpenSourceU.webserver.io.*;
+import com.theOpenSourceU.webserver.debugutil.*;
 
 /**
  * Suppose to 'work' upon a connection for a std. client.

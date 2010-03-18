@@ -24,7 +24,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 
-import com.theOpenSourceU.webserver.io.*;
+import com.theOpenSourceU.webserver.debugutil.*;
 
 /**
  * Copy your InetServer.java source (or your jokeserver) to a file 

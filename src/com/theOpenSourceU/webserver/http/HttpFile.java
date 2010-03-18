@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.theOpenSourceU.webserver.io.*;
+import com.theOpenSourceU.webserver.debugutil.*;
 
 //Should use factory but... meh.
 
