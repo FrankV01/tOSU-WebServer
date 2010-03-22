@@ -29,8 +29,8 @@ package com.theOpenSourceU.webserver.debugutil;
 final class NoDebugPrinter extends DebugPrinter implements DebugPrintable  {
 	
 	/**
-	 * Ignore the message; don't print anything
+	 * Ignore the message; does not print anything.
 	 */
- 	@Override //Intentionally does nothing.
+ 	@Override
 	public void printMessage(String Message) { }
 }

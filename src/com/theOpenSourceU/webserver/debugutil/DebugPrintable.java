@@ -27,10 +27,10 @@ package com.theOpenSourceU.webserver.debugutil;
  *
  */
 public interface DebugPrintable {
-	/** Default implementation to report errors only. Messages are ignored */
+	/** Package's Default implementation to report errors only. Messages are ignored */
 	public static DebugPrintable ERRORONLY = new NoDebugPrinter();
 	
-	/** Default implementation */
+	/** Package's Default implementation. */
 	public static DebugPrintable DEFAULTIMPL = new DebugPrinter();
 
 	/**
