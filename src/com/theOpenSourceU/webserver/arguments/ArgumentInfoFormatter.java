@@ -18,9 +18,17 @@
 
 package com.theOpenSourceU.webserver.arguments;
 
-// TODO: This class should be package private. Need 
-//  to switch this back.
+
+/**
+ * A class to provide formatting services.
+ *
+ * TODO: This class should be package private. Need to switch this back.
+ */
 public class ArgumentInfoFormatter {
+	/**
+	 * Provides a simple mechanizim to format a Argument Processor suitable for use 
+	 * on the console. Intended to show with the "debugging" information.
+	 */
 	public static String getArgumentInfo(ArgumentProcessor toFormat) {
 		StringBuilder _sb = new StringBuilder();
 		

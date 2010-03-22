@@ -24,13 +24,26 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * This is a basic implementation of ArgumentProcessor, suitable
+ * for general use. 
+ */
 class BasicArgumentProcessor implements ArgumentProcessor {
 
+	/** The argument list */
 	List< Argument<String> > _values;
 	
+	/** The processor (program) title */
 	String _title;
+	
+	/** The processor (program) description */
 	String _description;
 	
+	/** 
+	 * In addition to constructing a new Argument Processor, this 
+	 * parse the <code>String[]</code> apart and converts to the 
+	 * <code>List&gt;Argument&gt;String&lt;&lt;</code>
+	 */
 	public BasicArgumentProcessor( String[] args, List< Argument<String> > Defaults ) {
 		setTitle("");
 		setDescription("");
@@ -103,30 +116,44 @@ class BasicArgumentProcessor implements ArgumentProcessor {
 		return _map;
 	}
 
+	/**
+	 * Provides the help meessage
+	 * see getHelp
+	 */	 
 	@Override
 	public String toString() {
 		return getHelp();
 	}
 
-
+	/** 
+	 * Provides the description for the processor. Generally represents
+	 * The details a user might need to understand what the parameters 
+	 * are for.
+	 */ 
 	@Override
 	public String getDescription() {
 		return _description;
 	}
 
 
+	/** 
+	 * Returns the title of the processor, which is often the 
+	 * sames as the title of the program. Used for formatted 
+	 * output and such.
+	 */
 	@Override
 	public String getTitle() {
 		return _title;
 	}
 
-
+	
+	/** Sets the processor's description */
 	@Override
 	public void setDescription(String Description) {
 		_description = Description;
 	}
 
-
+	/** Sets the processor's title */
 	@Override
 	public void setTitle(String Title) {
 		_title = Title;

@@ -21,16 +21,38 @@ package com.theOpenSourceU.webserver.arguments;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Provides package-default instances of the Argument<T> interface. 
+ * These instances should be suitable for general use and should be 
+ * favored over custom implementations.
+ */
 public class ArgumentFactory {
+	/**
+	 * Returns a String-backed Argument instance. (Usage should be favored)
+	 * 
+	 * @see ArgumentImp<T>
+	 */
 	public static Argument<String> newArgument( String Key, String Default, String HelpMessage ) {
 		return new ArgumentImp<String>( Key, Default, HelpMessage );
 	}
 	
+	/*
+	 * Returns a collection that implements the list interface to hold
+	 * items of Argument<String> type.
+	 * 
+	 * @see Argument<T>
+	 */
 	public static List<Argument<String>> newArgumentList() {
 		return new ArrayList< Argument<String> >();
 	}
 	
+	/**
+	 * Provides a Argument Processor instance which can parse arguments
+	 * suitable for all package-default implementations.
+	 * 
+	 * @see ArgumentProcessor
+	 * @see BasicArgumentProcessor
+	 */
 	public static ArgumentProcessor newArgumentProcessor( String[] args, 
 			List<Argument<String>> PrefilledDefaults ) {
 		return new BasicArgumentProcessor(args, PrefilledDefaults);
