@@ -50,7 +50,7 @@ ${build}
 	<property name="doc" location="javadocs" />
 	
 	<property name="project-name" value="tOSU-WebServer" />
-	<property name="test.pat" value="**/*test*.java" />
+	<property name="test.pat" value="**/**.java" />
 	<property name="compiler.args" value="-Xlint" />
 	<property name="main.name" 
 		value="com.theOpenSourceU.webserver.ui.MyWebServer" />
