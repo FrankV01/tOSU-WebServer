@@ -89,6 +89,59 @@ public class ArgumentImp<T> implements Argument<T> {
 		return _sb.toString();
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((_default == null) ? 0 : _default.hashCode());
+		result = prime * result
+				+ ((_helpMsg == null) ? 0 : _helpMsg.hashCode());
+		result = prime * result + ((_key == null) ? 0 : _key.hashCode());
+		result = prime * result + ((_value == null) ? 0 : _value.hashCode());
+		
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		
+		if (obj == null) return false;
+		
+		if (getClass() != obj.getClass()) return false;
+		
+		//Warning here is suppressed. Doesn't seem to be a way to get around it.
+		ArgumentImp<T> other = (ArgumentImp<T>) obj;
+		
+		
+		if (_default == null) {
+			if (other._default != null)
+				return false;
+		} else if (!_default.equals(other._default))
+			return false;
+		
+		if (_helpMsg == null) {
+			if (other._helpMsg != null)
+				return false;
+		} else if (!_helpMsg.equals(other._helpMsg))
+			return false;
+		
+		if (_key == null) {
+			if (other._key != null)
+				return false;
+		} else if (!_key.equals(other._key))
+			return false;
+		
+		if (_value == null) {
+			if (other._value != null)
+				return false;
+		} else if (!_value.equals(other._value))
+			return false;
+		
+		return true;
+	}
 }
 
 

@@ -4,7 +4,7 @@ syntax: glob
 *.DS_Store
 
 # ignore the build directory.
-**/build/**
+**build/**
 
 # ignore compiled java files
 *.class
