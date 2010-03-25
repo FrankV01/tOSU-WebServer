@@ -37,11 +37,20 @@ final public class WorkerFactory {
 	 * type of server or to shut down the server.
 	 * @param s The socket to communicate over
 	 * @return The instance.
+	 * @see HttpWorker
 	 */
 	public static Thread newServerWorker(Socket s, String PathToServeFrom, DebugPrintable DebugPrinter) {
 		return new HttpWorker(s, PathToServeFrom, DebugPrinter);
 	}
 	
+	/**
+	 * Provides a new listern thread which allows the server
+	 * to output what the client sends to the server's console
+	 * 
+	 * @param s The socket to communicate over.
+	 * @return the instance to use.
+	 * @see MyListener
+	 */
 	public static Thread newListener(Socket s, DebugPrintable DebugPrinter) {
 		return new Thread(new MyListener(s, DebugPrinter));
 	}

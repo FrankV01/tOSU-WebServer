@@ -41,11 +41,23 @@ class MyListener implements Runnable {
 	Socket _sock;
 	DebugPrintable _dPrinter;
 	
+	/**
+	 * Constructor: Accepts the socket and DebugPrintable to 
+	 * work with.
+	 * 
+	 * @param sock The socket to communicate over.
+	 * @param DebugPrinter The debug printer to use to output messages.
+	 */
 	MyListener( Socket sock, DebugPrintable DebugPrinter ) {
 		_sock = sock;
 		_dPrinter = DebugPrinter;
 	}
 	
+	/** 
+	 * Outputs what the client sends to the server's console
+	 * and sends a "HTTP 200 OK" message to the client browser
+	 * so that it does not hang
+	 */
 	@Override
 	public void run() {
 		PrintStream out = null;

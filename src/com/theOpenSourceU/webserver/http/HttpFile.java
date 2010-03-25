@@ -40,8 +40,13 @@ class HttpFile extends File implements HttpFileRequest {
 	 */
 	private static final long serialVersionUID = 1713316465309825030L;
 
-	public HttpFile(String arg0) {
-		super(arg0);
+	/** 
+	 * Constructor. Accepts the file name and passed to the base class. 
+	 * 
+	 * @parm pathname The pathname as defined by <code>File</code>
+	 */
+	public HttpFile(String pathname) {
+		super(pathname);
 	}
 
 	@Override

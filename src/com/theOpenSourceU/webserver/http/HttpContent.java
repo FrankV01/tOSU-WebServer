@@ -159,10 +159,13 @@ class HttpContentFactory {
 		return new HtmlFileSystemPage2( file, DebugPrinter );
 	}
 	
+	/** 
+	 * Provides a HttpContent instance to process requests for
+	 * image files 
+	 */
 	public static HttpContent newImageFile( File file, DebugPrintable debugPrinter ) {
 		return new HttpImageFile( file, debugPrinter );
 	}
-	
 	
 }
 

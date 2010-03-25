@@ -28,6 +28,7 @@ import java.util.Map;
  *
  */
 public interface HttpFileRequest {
+	/** The name of the file being requested. No Arguments included */
 	String getName();
 	
 	/**
