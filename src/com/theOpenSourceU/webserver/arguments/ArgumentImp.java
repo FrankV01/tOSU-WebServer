@@ -44,10 +44,19 @@ public class ArgumentImp<T> implements Argument<T> {
 	 * The default value is used for the default field and value field. 
 	 */
 	ArgumentImp( String Key, T Default, String HelpMessage ) {
+		exceptionIfNull(Key);
+		exceptionIfNull(Default);
+		exceptionIfNull(HelpMessage);
+		
 		_key = Key;
 		_value = Default;
 		_default = Default;
 		_helpMsg = HelpMessage;
+	}
+	
+	/** Throws an exception of objToCheck is null */
+	private void exceptionIfNull( Object objToCheck ) {
+		if( objToCheck == null ) throw new IllegalArgumentException();
 	}
 	
 	/** Returns the help message */
