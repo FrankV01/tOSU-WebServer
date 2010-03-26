@@ -46,7 +46,9 @@ class HttpFile extends File implements HttpFileRequest {
 	 * @parm pathname The pathname as defined by <code>File</code>
 	 */
 	public HttpFile(String pathname) {
-		super(pathname);
+		super(pathname); //req'd to be 1st.
+		
+		if( pathname == null || pathname.trim().length() == 0 ) throw new IllegalArgumentException();
 	}
 
 	@Override
