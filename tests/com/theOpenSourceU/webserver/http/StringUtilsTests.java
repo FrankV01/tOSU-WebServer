@@ -5,7 +5,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-public class StringUtilsTests {
+public final class StringUtilsTests {
 
 	@Test
 	public void testRepeat() {
