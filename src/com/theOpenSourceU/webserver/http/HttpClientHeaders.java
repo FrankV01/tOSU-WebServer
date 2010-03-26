@@ -53,6 +53,9 @@ public interface HttpClientHeaders extends List<String> {
  */
 class HttpClientHeadersImpl implements HttpClientHeaders {
 
+	/** The list of headers, eventually converted to an
+	 *  approriate format for an client browser. 
+	 */
 	List<String> _h;
 	
 	HttpClientHeadersImpl() {
@@ -114,13 +117,19 @@ class HttpClientHeadersImpl implements HttpClientHeaders {
 		return _head;
 	}
 	
+	/** Provides the entire name for the webserver. All contents hardcoded */
 	private static String serverNameVersion() {
 		return "Server: Frank Web Server 1.0";
 	}
+	/** Provides the date/timeframe the request was made -- ie, "now" */
 	private static String dateHeader() {
 		return new StringBuilder("Date: ").append( new Date() ).toString();
 	}
 	
+	/** 
+	 * Ensures the argument is not null. Throws exception IllegalArgumentException 
+	 * if it is null.
+	 */
 	private void checkHttpPage( HttpContent page ) {
 		if( page == null ) {
 			throw new IllegalArgumentException();
@@ -248,7 +257,7 @@ class HttpClientHeadersImpl implements HttpClientHeaders {
 		for( String s : this ) {
 			if( s != null ) {
 				_sb.append(s);
-				_sb.append("\r\n"); //_sb.append("\n");
+				_sb.append("\r\n");
 			}
 		}
 		
@@ -256,6 +265,11 @@ class HttpClientHeadersImpl implements HttpClientHeaders {
 		return _sb.toString();
 	}
 	
+	/** 
+	 * Provides the sting to indicate to the client-browser
+	 * that the headers have concluded (which in turn indicate 
+	 * that content data is following 
+	 */ 
 	private String Terminator() {
 		return "\r\n\r\n";
 	}

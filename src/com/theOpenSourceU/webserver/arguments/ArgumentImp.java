@@ -18,13 +18,31 @@
 
 package com.theOpenSourceU.webserver.arguments;
 
+/**
+ * A default 'Argument' implementation. The class should be 
+ * suitable for general purpose usage. The class implements
+ * all required interface peices as described the interface. 
+ * All implementations have been kept as simple as possible.
+ * 
+ * TODO: http://bitbucket.org/frankv01/tosu-webserver/issue/2/argumentimp-should-implement-hashcode-and
+ */ 
 public class ArgumentImp<T> implements Argument<T> {
-
-	String _key;
-	T _value;
-	T _default;
-	String _helpMsg;
+	/** Holds the key which is the reference value. */
+	final String _key;
 	
+	/** Holds the value to be stored for the argument */
+	T _value;
+	
+	/** Holds the default value for the argument. This should change */
+	final T _default;
+	
+	/** Holds the help message for the argument. */
+	final String _helpMsg;
+	
+	/** 
+	 * Default constructor accepts the key, default and help message.
+	 * The default value is used for the default field and value field. 
+	 */
 	ArgumentImp( String Key, T Default, String HelpMessage ) {
 		_key = Key;
 		_value = Default;
@@ -32,28 +50,33 @@ public class ArgumentImp<T> implements Argument<T> {
 		_helpMsg = HelpMessage;
 	}
 	
+	/** Returns the help message */
 	@Override
 	public String getHelp() {
 		return _helpMsg;
 	}
 
+	/** Returns the argument key */
 	@Override
 	public String getKey() {
 		return _key;
 	}
 
+	/** Returns the current value */
 	@Override
 	public T getValue() {
 		return _value;
 	}
 
 
+	/** Sets the current value. */
 	@Override
 	public void setValue(T value) {
 		_value = value;
 		
 	}
 	
+	/** Provides a string representation suitable for simple console output */
 	@Override
 	public String toString() {
 		StringBuilder _sb = new StringBuilder("-");

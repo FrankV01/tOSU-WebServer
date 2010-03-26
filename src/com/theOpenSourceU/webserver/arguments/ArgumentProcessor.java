@@ -20,6 +20,12 @@ package com.theOpenSourceU.webserver.arguments;
 
 import java.util.Map;
 
+/**
+ * Defines the interface to take the commandline arguments
+ * and convert them to this package's definiation of an argument.
+ * This class them provides services for retreiving those 
+ * arguments and providing basic output.
+ */
 public interface ArgumentProcessor {
 
 	/**
