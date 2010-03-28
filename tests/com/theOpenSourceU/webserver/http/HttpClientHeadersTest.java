@@ -1,5 +1,7 @@
 package com.theOpenSourceU.webserver.http;
 
+import java.io.InputStream;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -26,11 +28,39 @@ public class HttpClientHeadersTest {
   	 * What we are not testing is necessarily the factory methods, just the correct 
   	 * structure with the correct line breaks.
   	 * 
+  	 * <em>Note:</em> This test is actually redundant but for the time being I'm hesitant to remove it.
+  	 * 
 	 */
 	@Test
 	public void testToString() {
-		//We are expecting a certain format back and we should check for that
-		Assert.fail();
+		
+		// Note: Should be the correct implementation which in this case is HttpClientHeadersImpl.
+		HttpClientHeaders i = HttpClientHeadersImpl.newSuccessHeaders(new InternalMockHttpPage());
+		
+		final String _rslt = i.toString();
+		
+		// Should end with
+		_rslt.startsWith("HTTP/1.1");
+		_rslt.contains("OK/r/n");
+		_rslt.contains("Content-Length: 5/r/n");
+		_rslt.contains( String.format("Content-Type: %s/r/n", new MockHttpPage().type()) );
+		_rslt.endsWith("/r/n/r/n");
+	}
+	
+	private class InternalMockHttpPage implements HttpContent {
+
+		@Override
+		public InputStream generate() { return null; }
+
+		@Override
+		public String render() throws UnsupportedOperationException { return ""; }
+
+		@Override
+		public int size() { return 5; }
+
+		@Override
+		public String type() { return "text/html"; }
+		
 	}
 	
 }

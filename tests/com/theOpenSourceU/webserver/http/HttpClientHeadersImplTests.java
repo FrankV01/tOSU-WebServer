@@ -87,6 +87,16 @@ public class HttpClientHeadersImplTests {
 	// proper line breaks between each item and the double line breaks at the end.
 	@Test
 	public void testToString() {
-		Assert.fail();
+		
+		i = (HttpClientHeadersImpl)HttpClientHeadersImpl.newSuccessHeaders(new MockHttpPage());
+		
+		final String _rslt = i.toString();
+		
+		// Should end with
+		_rslt.startsWith("HTTP/1.1");
+		_rslt.contains("OK/r/n");
+		_rslt.contains("Content-Length: 0/r/n");
+		_rslt.contains( String.format("Content-Type: %s/r/n", new MockHttpPage().type()) );
+		_rslt.endsWith("/r/n/r/n");
 	}
 }
