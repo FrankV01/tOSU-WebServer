@@ -26,7 +26,7 @@ import java.util.Arrays;
  * @author Frank
  *
  */
-class StringUtils {
+final class StringUtils {
 	
 	/**
 	 * Repeats a single character.

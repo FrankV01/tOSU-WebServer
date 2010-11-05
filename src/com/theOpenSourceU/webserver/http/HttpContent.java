@@ -37,7 +37,7 @@ import com.theOpenSourceU.webserver.debugutil.*;
  * Represents a server-built in page
  * that can be generated.
  * @author Frank
- *
+ * @see <a href="http://bitbucket.org/frankv01/tosu-webserver/issue/6/seperate-other-classes-from">http://bitbucket.org/frankv01/tosu-webserver/issue/6/seperate-other-classes-from</a>
  */
 public interface HttpContent {
 	

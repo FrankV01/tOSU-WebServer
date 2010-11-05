@@ -28,7 +28,7 @@
 	========================================================================
 -->
 
-<project name="Web Server" default="test">
+<project name="tOSU-WebServer" default="test">
 	<description>
 This is a basic build file for the "Web Server" programs.
 
